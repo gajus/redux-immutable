@@ -1,0 +1,1 @@
+export combineReducers from './combineReducers';
