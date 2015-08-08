@@ -1,6 +1,12 @@
 # redux-immutable
 
-## `store.js`
+This package provides a single function `combineReducers`. `combineReducers` expects the entire state to be an [Immutable.js](https://facebook.github.io/immutable-js/) object. Otherwise, `combineReducers` is equivalent to the ](http://gaearon.github.io/redux/docs/api/combineReducers.html) function that is part of the Redux framework.
+
+This package is designed to be used with [react-redux](https://www.npmjs.com/package/react-redux). Use `mapStateToProps` callback of the `connect` method to transform `Immutable` object to regular object before proceeding to use selectors.
+
+## Example
+
+### `store.js`
 
 ```js
 import {
@@ -42,7 +48,7 @@ store = createStore(app, state);
 export default store;
 ```
 
-## `app.js`
+### `app.js`
 
 ```js
 import React from 'react';
