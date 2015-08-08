@@ -5,7 +5,7 @@
 ```js
 import {
     createStore
-} from './../../redux';
+} from 'redux';
 
 import {
     combineReducers
