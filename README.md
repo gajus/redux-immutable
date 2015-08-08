@@ -122,6 +122,31 @@ export let ui = (state, action) => {
 
     return state;
 };
+
+/**
+ * @param {Immutable} state
+ * @param {Object} action
+ * @param {String} action.type
+ * @param {Number} action.id
+ */
+export let locations = (state, action) => {
+    switch (action.type) {
+        // @param {String} action.name
+        case 'CHANGE_NAME_LOCATION':
+            let locationIndex;
+
+            locationIndex = state.findIndex(function (location) {
+                return location.get('id') === action.id;
+            });
+
+            state = state.update(locationIndex, function (location) {
+                return location.set('name', action.name);
+            });
+            break;
+    }
+
+    return state;
+};
 ```
 
 ### `app.js`
