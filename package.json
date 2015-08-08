@@ -1,6 +1,6 @@
 {
   "name": "redux-immutable",
-  "description": "",
+  "description": "Streamlines use of Immutable.js with Redux reducers.",
   "main": "src/index.js",
   "keywords": [
     "immutable",
