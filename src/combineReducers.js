@@ -1,20 +1,16 @@
 import _ from 'lodash';
+import Immutable from 'immutable';
 
 let isValidReducersObject,
+    isValidActionObject,
     getUnexpectedReducerOutputError;
 
 /**
- * Ensures that all reducers definition object values are functions.
- *
- * @param {Object} reducers
- * @throws Error When reducers definition object has values that are not functions.
+ * @param {Object} action
+ * @throws
  */
-isValidReducersObject = (reducers) => {
-    _.forEach(reducers, (value, key) => {
-        if (!_.isFunction(value)) {
-            throw new Error('All reducers definition object values must be functions. "' + key + '" property is a "' + typeof value + '".');
-        }
-    });
+isValidActionObject = (action) => {
+
 };
 
 /**
@@ -22,13 +18,7 @@ isValidReducersObject = (reducers) => {
  * @param {Object} action
  */
 getUnexpectedReducerOutputError = (key, action) => {
-    let actionType,
-        actionName;
-
-    actionType = action && action.type;
-    actionName = actionType && '"' + actionType + '"' || 'an action';
-
-    return 'Reducer "' + key + '" returned undefined handling ' + actionName + '.';
+    return 'Reducer "' + key + '" returned undefined while handling "' + action.type + '" action.';
 };
 
 /**
@@ -40,11 +30,29 @@ getUnexpectedReducerOutputError = (key, action) => {
 export default (reducers) => {
     let defaultState;
 
-    isValidReducersObject(reducers);
+    if (!_.isObject(reducers)) {
+        throw new Error('Reducers definition parameter must be an object.');
+    }
 
-    defaultState = _.map(reducers, _.constant(undefined));
+    _.forEach(reducers, (value, key) => {
+        if (!_.isFunction(value)) {
+            throw new Error('All reducers definition object property values must be functions. "' + key + '" property is a "' + typeof value + '".');
+        }
+    });
 
-    return (state = defaultState, action) => {
+    return (state, action) => {
+        if (!_.isObject(action)) {
+            throw new Error('Action definition parameter must be an object.');
+        }
+
+        if (!_.isString(action.type)) {
+            throw new Error('Action definition parameter type property must be a string.');
+        }
+
+        if (!(state instanceof Immutable.Map)) {
+            throw new Error('State must be an instance of Immutable.Map.');
+        }
+
         _.forEach(reducers, (reducer, key) => {
             let value;
 
