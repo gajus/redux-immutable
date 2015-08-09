@@ -1,17 +1,7 @@
 import _ from 'lodash';
 import Immutable from 'immutable';
 
-let isValidReducersObject,
-    isValidActionObject,
-    getUnexpectedReducerOutputError;
-
-/**
- * @param {Object} action
- * @throws
- */
-isValidActionObject = (action) => {
-
-};
+let getUnexpectedReducerOutputError;
 
 /**
  * @param {String} key Name of the reducer.
