@@ -1,5 +1,8 @@
 # redux-immutable
 
+[![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
+[![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
+
 This package provides a single function `combineReducers`. `combineReducers` is equivalent to the redux [`combineReducers`](http://gaearon.github.io/redux/docs/api/combineReducers.html) function, except that it expects state to be an [Immutable.js](https://facebook.github.io/immutable-js/) object.
 
 When using redux-immutable together with [react-redux](https://www.npmjs.com/package/react-redux) use `mapStateToProps` callback of the `connect` method to transform `Immutable` object to a regular JavaScript object before passing it to the selectors, e.g.
