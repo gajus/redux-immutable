@@ -1,5 +1,7 @@
 # `redux-immutable`
 
+## New version is WIP. Should be out tomorrow.
+
 [![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
 [![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
 
