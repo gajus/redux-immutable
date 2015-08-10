@@ -1,7 +1,5 @@
 # `redux-immutable`
 
-## New version is WIP. Should be out tomorrow.
-
 [![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
 [![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
 
@@ -37,6 +35,114 @@ class App extends React.Component {
 }
 
 export default connect(selector)(App);
+```
+
+## Canonical Reducer Composition
+
+Canonical Reducer Composition `combineReducers` requires that:
+
+1. Action definition object has `type` property.
+1. Reducer definition object registers domains
+1. Domain definition object registers actions
+
+```js
+{
+    <domain>: {
+        <action> (domain, action) {
+
+        }
+    }
+}
+```
+
+In addition, domain can define a sub-domain:
+
+```js
+{
+    <domain>: {
+        <domain>: {
+            <action> (domain, action) {
+
+            },
+            <action> (domain, action) {
+
+            }
+        },
+        <domain>: {
+            <action> (domain, action) {
+
+            }
+        }
+    }
+}
+```
+
+Domains and actions cannot be mixed under a single parent domain.
+
+Canonical Reducer Composition has the following benefits:
+
+* Introduces reducer declaration convention.
+* Domain reducer function is called only if it registers an action.
+* Enables intuitive nesting of the domain model.
+
+## Example
+
+```js
+let state,
+    reducer;
+
+state = {
+    // <domain>
+    countries: [
+        'IT',
+        'JP',
+        'DE'
+    ],
+    // <domain>
+    cities: [
+        'Rome',
+        'Tokyo',
+        'Berlin'
+    ],
+    // <domain>
+    user: {
+        // <domain>
+        names: [
+            'Gajus',
+            'Kuizinas'
+        ]
+    }
+}
+```
+
+```js
+reducer = {
+    // Implementing country domain reducers using arrow function syntax.
+    countries: {
+        ADD_COUNTRY: (domain, action) => domain.push(action.country),
+        REMOVE_COUNTRY: (domain, action) => domain.delete(domain.indexOf(action.country))
+    },
+    // Implementing city domain reducers using object method syntax.
+    cities: {
+        ADD_CITY (domain, action) {
+            return domain.push(action.city);
+        }
+        REMOVE_CITY (domain, action) {
+            return domain.delete(domain.indexOf(action.city));
+        }
+    },
+    // Implement a sub-domain reducer map.
+    user: {
+        names: {
+            ADD_NAME (domain, action) {
+                return domain.push(action.name);
+            }
+            REMOVE_NAME (domain, action) {
+                return domain.delete(domain.indexOf(action.name));
+            }
+        }
+    }
+};
 ```
 
 ## Redux Reducer Composition
@@ -88,113 +194,6 @@ There are several problems with this:
 * The overhead of maintaining the boilerplate.
 
 To address these issues, `redux-immutable` adapts a pattern of convention over configuration. For documentation reference purposes, lets call it Canonical Reducer Composition.
-
-## Canonical Reducer Composition
-
-To address the deficiencies of [Redux Reducer Composition](#redux-reducer-composition), `redux-immutable` `combineReducers` requires that:
-
-1. Reducers definition object registers domains (like Redux)
-1. Domain definition object registers actions
-
-```js
-{
-    <domain>: {
-        <action> (domain, action) {
-
-        }
-    }
-}
-```
-
-In addition, domain can define a sub-domain:
-
-```js
-{
-    <domain>: {
-        <domain>: {
-            <action> (domain, action) {
-
-            },
-            <action> (domain, action) {
-
-            }
-        },
-        <domain>: {
-            <action> (domain, action) {
-
-            }
-        }
-    }
-}
-```
-
-Actions and domains cannot be mixed under a single parent domain.
-
-Canonical Reducer Composition has the following benefits:
-
-* Introduces reducer declaration convention.
-* Domain reducer function is called only if it registers an action.
-* Enables intuitive nesting of the domain model.
-
-### Example
-
-```js
-let state,
-    reducer;
-
-state = {
-    // <domain>
-    countries: [
-        'IT',
-        'JP',
-        'DE'
-    ],
-    // <domain>
-    cities: [
-        'Rome',
-        'Tokyo',
-        'Berlin'
-    ],
-    // <domain>
-    user: {
-        // <domain>
-        names: [
-            'Gajus',
-            'Kuizinas'
-        ]
-    }
-}
-```
-
-```js
-reducers = {
-    // Implementing country domain reducers using arrow functions.
-    countries: {
-        ADD_COUNTRY: (domain, action) => domain.push(action.country),
-        REMOVE_COUNTRY: (domain, action) => domain.delete(domain.indexOf(action.country))
-    },
-    // Implementing city domain reducers using regular ES6 object.
-    cities: {
-        ADD_CITY (domain, action) {
-            return domain.push(action.city);
-        }
-        REMOVE_CITY (domain, action) {
-            return domain.delete(domain.indexOf(action.city));
-        }
-    },
-    // Implement a sub-domain reducer map.
-    user: {
-        names: {
-            ADD_NAME (domain, action) {
-                return domain.push(action.name);
-            }
-            REMOVE_NAME (domain, action) {
-                return domain.delete(domain.indexOf(action.name));
-            }
-        }
-    }
-};
-```
 
 ## Using with [webpack](https://github.com/webpack/webpack) and [Babel](https://github.com/babel/babel)
 

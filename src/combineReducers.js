@@ -1,7 +1,9 @@
 import _ from 'lodash';
-import Immutable from 'immutable';
 
-let getUnexpectedReducerOutputError;
+let getUnexpectedReducerOutputError,
+    isDomainMap,
+    isActionMap,
+    iterator;
 
 /**
  * @param {String} key Name of the reducer.
@@ -12,62 +14,61 @@ getUnexpectedReducerOutputError = (key, action) => {
 };
 
 /**
- * @param {Object} reducers An object whose values correspond to different
- * reducer functions that need to be combined into one.
- * @returns {Function} A reducer function that invokes every reducer inside the
- * passed Immutable object, and builds a state object with the same shape.
+ * @param {Object.<string, Object>} map
+ * @return {Boolean} If every object property value is a plain object.
  */
-export default (reducers) => {
-    let defaultState;
+isDomainMap = (map) => {
+    return _.every(map, _.isPlainObject);
+};
 
-    if (!_.isObject(reducers)) {
-        throw new Error('Reducers definition parameter must be an object.');
-    }
+/**
+ * @param {Object.<string, Function>} map
+ * @return {Boolean} If every object property value is a function.
+ */
+isActionMap = (map) => {
+    return _.every(map, _.isFunction);
+};
 
-    _.forEach(reducers, (domainReducers, key) => {
-        if (!_.isObject(domainReducers)) {
-            throw new Error('All reducers definition object property values must be objects. "' + key + '" property is a "' + typeof domainReducers + '".');
-        }
+/**
+ * @param {Object} state
+ * @param {Object} action
+ * @param {String} action.type
+ * @param {Object} reducers
+ * @return {Object} state
+ */
+iterator = (state, action, reducers) => {
+    _.forEach(reducers, (value, domain) => {
+        // console.log('value, name', value, name, 'isActionMap', isActionMap(value), 'isDomainMap', isDomainMap(value));
 
-        _.forEach(domainReducers, (reducer, key) => {
-            console.log('reducer', reducer);
+        if (isActionMap(value)) {
+            // console.log('action.type', action.type, 'value[action.type]', typeof value[action.type]);
 
-            if (!_.isFunction(reducer)) {
-                throw new Error('All reducers definition object property values must be functions. "' + key + '" property is a "' + typeof reducer + '".');
+            if (value[action.type]) {
+                let result;
+
+                result = value[action.type](state.get(domain), action);
+
+                if (result === undefined) {
+                    throw new Error(getUnexpectedReducerOutputError(domain, action));
+                }
+
+                state = state.set(domain, result);
             }
-        });
+        } else if (isDomainMap(value)) {
+            state = state.set(domain, iterator(state.get(domain), action, value))
+        } else {
+            throw new Error('Reducer definition object value object all values must correspond to a function (action map) or an object (domain map).');
+        }
     });
 
+    return state;
+};
+
+/**
+ * @param {Object} reducers
+ */
+export default (reducers) => {
     return (state, action) => {
-        if (!_.isObject(action)) {
-            throw new Error('Action definition parameter must be an object.');
-        }
-
-        if (!_.isString(action.type)) {
-            throw new Error('Action definition parameter type property must be a string.');
-        }
-
-        // @todo It can be List, etc.
-        // if (!(state instanceof Immutable.Map)) {
-        //    throw new Error('State must be an instance of Immutable.Map.');
-        // }
-
-        _.forEach(reducers, (domainReducers, key) => {
-            let value;
-
-            if (!domainReducers[action.type]) {
-                return;
-            }
-
-            value = domainReducers[action.type](state.get(key), action);
-
-            if (value === undefined) {
-                throw new Error(getUnexpectedReducerOutputError(key, action));
-            }
-
-            state = state.set(key, value);
-        });
-
-        return state;
+        return iterator(state, action, reducers);
     };
 };
