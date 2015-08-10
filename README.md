@@ -134,7 +134,7 @@ let state;
 
 state = store.getState();
 
-console.log(state instanceof Immutable.Map);
+console.log(Immutable.Map.isMap(state));
 // true
 ```
 
