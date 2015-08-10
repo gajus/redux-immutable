@@ -127,7 +127,7 @@ store = createStore(reducer, Immutable.fromJS(state));
 
 ## Unpacking Immutable State
 
-`redux-immutable` `combineReducers` turns state into Immutable data. Therefore, when you request data store state you will get an instance of `Immutable.Map`:
+`redux-immutable` `combineReducers` turns state into Immutable data. Therefore, when you request the store state you will get an instance of `Immutable.Map`:
 
 ```js
 let state;
