@@ -3,47 +3,20 @@
 [![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
 [![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
 
-This package provides a single function `combineReducers`. `combineReducers` is equivalent to the redux [`combineReducers`](http://gaearon.github.io/redux/docs/api/combineReducers.html) function, except that it expects state to be an [Immutable.js](https://facebook.github.io/immutable-js/) object.
+This package provides a single function `combineReducers`, which enables:
 
-When using `redux-immutable` together with [react-redux](https://www.npmjs.com/package/react-redux) use `mapStateToProps` callback of the `connect` method to transform `Immutable` object to a regular JavaScript object before passing it to the selectors, e.g.
+* Immutable state of the app.
+* [Canonical Reducer Composition](#canonical-reducer-composition).
 
-```js
-import React from 'react';
-
-import {
-    connect
-} from 'react-redux';
-
-/**
- * @param {Immutable}
- * @return {Object} state
- * @return {Object} state.ui
- * @return {Array} state.locations
- */
-let selector = (state) => {
-    state = state.toJS();
-
-    // Selector logic ...
-
-    return state;
-};
-
-class App extends React.Component {
-    render () {
-        return <div></div>;
-    }
-}
-
-export default connect(selector)(App);
-```
+`redux-immutable` `combineReducers` is inspired by the Redux [`combineReducers`](http://gaearon.github.io/redux/docs/api/combineReducers.html) and [Redux Reducer Composition](#redux-reducer-composition) pattern.
 
 ## Canonical Reducer Composition
 
 Canonical Reducer Composition `combineReducers` requires that:
 
 1. Action definition object has `type` property.
-1. Reducer definition object registers domains
-1. Domain definition object registers actions
+1. Reducer definition object registers domains.
+1. Domain definition object registers actions.
 
 ```js
 {
@@ -77,17 +50,23 @@ In addition, domain can define a sub-domain:
 }
 ```
 
-Domains and actions cannot be mixed under a single parent domain.
-
 Canonical Reducer Composition has the following benefits:
 
 * Introduces reducer declaration convention.
 * Domain reducer function is called only if it registers an action.
 * Enables intuitive nesting of the domain model.
 
-## Example
+### Example
 
 ```js
+import {
+    createStore,
+} from 'redux';
+
+import {
+    combineReducers
+} from 'redux-immutable';
+
 let state,
     reducer;
 
@@ -113,9 +92,7 @@ state = {
         ]
     }
 }
-```
 
-```js
 reducer = {
     // Implementing country domain reducers using arrow function syntax.
     countries: {
@@ -143,7 +120,37 @@ reducer = {
         }
     }
 };
+
+reducer = combineReducers(reducers);
+store = createStore(reducer, Immutable.fromJS(state));
 ```
+
+## Unpacking Immutable State
+
+`redux-immutable` `combineReducers` turns state into Immutable data. Therefore, when you request data store state you will get an instance of `Immutable.Map`:
+
+```js
+store.getState();
+```
+
+You can convert the entire state to raw JavaScript object using Immutable.js [`toJS()`](https://facebook.github.io/immutable-js/docs/#/Iterable/toJS) function:
+
+```js
+let state;
+
+state = store.getState().toJS();
+```
+
+The disadvantage of this method is that it will create a new JavaScript object every time it is called:
+
+```js
+console.log(state.toJS() === state.toJS());
+// false
+```
+
+Because new state does will always not equal the previous state you cannot take advantage of [PureRenderMixin](https://facebook.github.io/react/docs/pure-render-mixin.html) or an equivalent logic that manages [`shouldComponentUpdate`](https://facebook.github.io/react/docs/component-specs.html#updating-shouldcomponentupdate) using shallow object comparison.
+
+For the above reason, you should consider feeding your components Immutable data.
 
 ## Redux Reducer Composition
 
