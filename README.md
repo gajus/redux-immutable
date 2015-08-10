@@ -130,14 +130,17 @@ store = createStore(reducer, Immutable.fromJS(state));
 `redux-immutable` `combineReducers` turns state into Immutable data. Therefore, when you request data store state you will get an instance of `Immutable.Map`:
 
 ```js
-store.getState();
+let state;
+
+state = store.getState();
+
+console.log(state instanceof Immutable.Map);
+// true
 ```
 
 You can convert the entire state to raw JavaScript object using Immutable.js [`toJS()`](https://facebook.github.io/immutable-js/docs/#/Iterable/toJS) function:
 
 ```js
-let state;
-
 state = store.getState().toJS();
 ```
 
