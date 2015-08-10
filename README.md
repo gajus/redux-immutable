@@ -3,12 +3,10 @@
 [![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
 [![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
 
-This package provides a single function `combineReducers`, which enables:
+This package provides a single function `combineReducers`, which implements:
 
 * Immutable state of the app.
 * [Canonical Reducer Composition](https://github.com/gajus/canonical-reducer-composition).
-
-`redux-immutable` `combineReducers` is inspired by the Redux [`combineReducers`](http://gaearon.github.io/redux/docs/api/combineReducers.html) and [Redux Reducer Composition](#redux-reducer-composition) pattern.
 
 ## Initial State
 
@@ -29,25 +27,14 @@ import * as reducers from './reducers';
 
 let app,
     store,
-    state = {};
+    state;
 
-state.ui = {
-    activeLocationId: 1
-};
+state = {};
 
-state.locations = [
-    {
-        id: 1,
-        name: 'Foo',
-        address: 'Foo st.',
-        country: 'uk'
-    },
-    {
-        id: 2,
-        name: 'Bar',
-        address: 'Bar st.',
-        country: 'uk'
-    }
+state.countries = [
+    'IT',
+    'JP',
+    'DE'
 ];
 
 state = Immutable.fromJS(state);
@@ -60,14 +47,14 @@ export default store;
 
 ## Unpacking Immutable State
 
-`redux-immutable` `combineReducers` turns state into Immutable data. Therefore, when you request the store state you will get an instance of `Immutable.Map`:
+`redux-immutable` `combineReducers` turns state into Immutable data. Therefore, when you request the store state you will get an instance of `Immutable.Iterable`:
 
 ```js
 let state;
 
 state = store.getState();
 
-console.log(Immutable.Map.isMap(state));
+console.log(Immutable.Iterable.isIterable(state));
 // true
 ```
 
@@ -88,20 +75,27 @@ Because shallow comparison says that new state is different from the previous st
 
 For the above reason, you should refrain from converting state or parts of the state to raw JavaScript object.
 
-## Using with [webpack](https://github.com/webpack/webpack) and [Babel](https://github.com/babel/babel)
+## Importing
 
-The files in `./src/` are written using ES6 features. Therefore, you need to use a source-to-source compiler when loading the files. If you are using webpack to build your project and Babel, make an exception for the `redux-immutable` source, e.g.
+The files in `./src/` are written using ES6 features. Therefore, you need to use a source-to-source compiler to load the module. If you are using webpack to build your project and Babel, make a separate test to compile `redux-immutable` source, e.g.
 
 ```js
-var webpack = require('webpack');
+let webpack = require('webpack');
 
 module.exports = {
     module: {
         loaders: [
             {
                 test: /\.js$/,
+                include: [
+                    /node_modules\/redux\-immutable/
+                ],
+                loader: 'babel'
+            },
+            {
+                test: /\.js$/,
                 exclude: [
-                    /node_modules(?!\/redux\-immutable)/
+                    /node_modules/
                 ],
                 loader: 'babel'
             }
@@ -129,26 +123,28 @@ import * as reducers from './reducers';
 
 let app,
     store,
-    state = {};
+    state;
 
-state.ui = {
-    activeLocationId: 1
-};
+state = {};
 
-state.locations = [
-    {
-        id: 1,
-        name: 'Foo',
-        address: 'Foo st.',
-        country: 'uk'
-    },
-    {
-        id: 2,
-        name: 'Bar',
-        address: 'Bar st.',
-        country: 'uk'
-    }
+state.countries = [
+    'IT',
+    'JP',
+    'DE'
 ];
+
+state.cities = [
+    'Rome',
+    'Tokyo',
+    'Berlin'
+];
+
+state.user = {
+    names: [
+        'Gajus',
+        'Kuizinas'
+    ]
+};
 
 state = Immutable.fromJS(state);
 
@@ -167,70 +163,31 @@ export default store;
  * @param {String} action.type
  * @param {Number} action.id
  */
-export let ui = (state, action) => {
-    switch (action.type) {
-        case 'ACTIVATE_LOCATION':
-            state = state.set('activeLocationId', action.id);
-            break;
+export default {
+    // Implementing country domain reducers using arrow function syntax.
+    countries: {
+        ADD_COUNTRY: (domain, action) => domain.push(action.country),
+        REMOVE_COUNTRY: (domain, action) => domain.delete(domain.indexOf(action.country))
+    },
+    // Implementing city domain reducers using object method syntax.
+    cities: {
+        ADD_CITY (domain, action) {
+            return domain.push(action.city);
+        }
+        REMOVE_CITY (domain, action) {
+            return domain.delete(domain.indexOf(action.city));
+        }
+    },
+    // Implement a sub-domain reducer map.
+    user: {
+        names: {
+            ADD_NAME (domain, action) {
+                return domain.push(action.name);
+            }
+            REMOVE_NAME (domain, action) {
+                return domain.delete(domain.indexOf(action.name));
+            }
+        }
     }
-
-    return state;
 };
-
-/**
- * @param {Immutable} state
- * @param {Object} action
- * @param {String} action.type
- * @param {Number} action.id
- */
-export let locations = (state, action) => {
-    switch (action.type) {
-        // @param {String} action.name
-        case 'CHANGE_NAME_LOCATION':
-            let locationIndex;
-
-            locationIndex = state.findIndex(function (location) {
-                return location.get('id') === action.id;
-            });
-
-            state = state.update(locationIndex, function (location) {
-                return location.set('name', action.name);
-            });
-            break;
-    }
-
-    return state;
-};
-```
-
-### `app.js`
-
-```js
-import React from 'react';
-
-import {
-    connect
-} from 'react-redux';
-
-/**
- * @param {Immutable}
- * @return {Object} state
- * @return {Object} state.ui
- * @return {Array} state.locations
- */
-let selector = (state) => {
-    state = state.toJS();
-
-    // Selector logic ...
-
-    return state;
-};
-
-class App extends React.Component {
-    render () {
-        return <div></div>;
-    }
-}
-
-export default connect(selector)(App);
 ```
