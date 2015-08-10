@@ -5,7 +5,7 @@
 
 This package provides a single function `combineReducers`, which implements:
 
-* Immutable state of the app.
+* Immutable state.
 * [Canonical Reducer Composition](https://github.com/gajus/canonical-reducer-composition).
 
 ## Initial State
