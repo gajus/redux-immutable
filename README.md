@@ -10,6 +10,54 @@ This package provides a single function `combineReducers`, which enables:
 
 `redux-immutable` `combineReducers` is inspired by the Redux [`combineReducers`](http://gaearon.github.io/redux/docs/api/combineReducers.html) and [Redux Reducer Composition](#redux-reducer-composition) pattern.
 
+## Initial State
+
+You must provide Redux `createStore` with the initial state using Immutable data.
+
+```js
+import {
+    createStore
+} from 'redux';
+
+import {
+    combineReducers
+} from 'redux-immutable';
+
+import Immutable from 'immutable';
+
+import * as reducers from './reducers';
+
+let app,
+    store,
+    state = {};
+
+state.ui = {
+    activeLocationId: 1
+};
+
+state.locations = [
+    {
+        id: 1,
+        name: 'Foo',
+        address: 'Foo st.',
+        country: 'uk'
+    },
+    {
+        id: 2,
+        name: 'Bar',
+        address: 'Bar st.',
+        country: 'uk'
+    }
+];
+
+state = Immutable.fromJS(state);
+
+app = combineReducers(reducers);
+store = createStore(app, state);
+
+export default store;
+```
+
 ## Canonical Reducer Composition
 
 Canonical Reducer Composition `combineReducers` requires that:
@@ -121,8 +169,9 @@ reducer = {
     }
 };
 
+state = Immutable.fromJS(state);
 reducer = combineReducers(reducers);
-store = createStore(reducer, Immutable.fromJS(state));
+store = createStore(reducer, state);
 ```
 
 ## Unpacking Immutable State
@@ -240,9 +289,9 @@ import {
     combineReducers
 } from 'redux-immutable';
 
-import * as reducers from './reducers';
-
 import Immutable from 'immutable';
+
+import * as reducers from './reducers';
 
 let app,
     store,
