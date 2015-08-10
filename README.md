@@ -153,7 +153,7 @@ console.log(state.toJS() === state.toJS());
 
 Because shallow comparison says that new state is different from the previous state you cannot take advantage of [PureRenderMixin](https://facebook.github.io/react/docs/pure-render-mixin.html) or an equivalent logic that manages [`shouldComponentUpdate`](https://facebook.github.io/react/docs/component-specs.html#updating-shouldcomponentupdate) using shallow object comparison.
 
-For the above reason, you should consider feeding your components Immutable data.
+For the above reason, you should refrain from converting state or parts of the state to raw JavaScript object.
 
 ## Redux Reducer Composition
 
