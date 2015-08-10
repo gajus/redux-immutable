@@ -138,7 +138,7 @@ console.log(state instanceof Immutable.Map);
 // true
 ```
 
-You can convert the entire state to raw JavaScript object using Immutable.js [`toJS()`](https://facebook.github.io/immutable-js/docs/#/Iterable/toJS) function:
+You can convert the entire state to a raw JavaScript object using Immutable.js [`toJS()`](https://facebook.github.io/immutable-js/docs/#/Iterable/toJS) function:
 
 ```js
 state = store.getState().toJS();
@@ -151,7 +151,7 @@ console.log(state.toJS() === state.toJS());
 // false
 ```
 
-Because new state does will always not equal the previous state you cannot take advantage of [PureRenderMixin](https://facebook.github.io/react/docs/pure-render-mixin.html) or an equivalent logic that manages [`shouldComponentUpdate`](https://facebook.github.io/react/docs/component-specs.html#updating-shouldcomponentupdate) using shallow object comparison.
+Because shallow comparison says that new state is different from the previous state you cannot take advantage of [PureRenderMixin](https://facebook.github.io/react/docs/pure-render-mixin.html) or an equivalent logic that manages [`shouldComponentUpdate`](https://facebook.github.io/react/docs/component-specs.html#updating-shouldcomponentupdate) using shallow object comparison.
 
 For the above reason, you should consider feeding your components Immutable data.
 
