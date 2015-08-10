@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     mocha = require('gulp-mocha'),
     eslint = require('gulp-eslint'),
+    babel = require('gulp-babel'),
     sourcemaps = require('gulp-sourcemaps');
 
 require('babel/register');
@@ -19,8 +20,17 @@ gulp.task('test', ['lint'], function () {
         .pipe(mocha());
 });
 
+gulp.task('dist', ['test'], function () {
+    return gulp
+        .src('./src/**/*.js')
+        .pipe(sourcemaps.init())
+        .pipe(babel())
+        .pipe(sourcemaps.write(''))
+        .pipe(gulp.dest('./dist'));
+});
+
 gulp.task('watch', function () {
     gulp.watch(['./src/**/*', './tests/**/*'], ['default']);
 });
 
-gulp.task('default', ['test']);
+gulp.task('default', ['dist']);

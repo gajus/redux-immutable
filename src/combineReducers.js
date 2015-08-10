@@ -1,10 +1,14 @@
 import _ from 'lodash';
 
 import Immutable from 'immutable';
+import {
+    validateReducer,
+    validateAction
+} from 'canonical';
 
-let isDomainMap,
-    isActionMap,
-    iterator;
+let iterator,
+    isDomainMap,
+    isActionMap;
 
 /**
  * @param {Object.<string, Object>} map
@@ -25,7 +29,7 @@ isActionMap = (map) => {
 /**
  * @param {Object} state
  * @param {Object} action
- * @param {String} action.type
+ * @param {String} action.name
  * @param {Object} collection
  * @return {Object} state
  */
@@ -40,23 +44,21 @@ iterator = (state, action, collection) => {
         // console.log('value', value, 'domain', domainName, 'isActionMap', isActionMap(value), 'isDomainMap', isDomainMap(value));
 
         if (isActionMap(value)) {
-            // console.log('action.type', action.type, 'value[action.type]', typeof value[action.type]);
+            // console.log('action.name', action.name, 'value[action.name]', typeof value[action.name]);
 
-            if (value[action.type]) {
+            if (value[action.name]) {
                 let result;
 
-                result = value[action.type](state.get(domainName), action);
+                result = value[action.name](state.get(domainName), action);
 
                 if (!Immutable.Iterable.isIterable(result)) {
-                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.type + '" action reducer result is "' + typeof result + '".');
+                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.name + '" action handler result is "' + typeof result + '".');
                 }
 
                 state = state.set(domainName, result);
             }
         } else if (isDomainMap(value)) {
             state = state.set(domainName, iterator(state.get(domainName), action, value))
-        } else {
-            throw new Error('Reducer definition object value object all values must correspond to a function (action map) or an object (domain map).');
         }
     });
 
@@ -64,27 +66,14 @@ iterator = (state, action, collection) => {
 };
 
 /**
- * @param {Object} reducers
+ * @param {Object} reducer
  */
-export default (reducers) => {
-    // _.values(reducers).length is used to ignore empty reducer definition.
-    if (isActionMap(reducers) && _.values(reducers).length) {
-        throw new Error('Reducer definition object must begin with a domain map.');
-    }
+export default (reducer) => {
+    validateReducer(reducer);
 
     return (state, action) => {
-        if (!_.isObject(action)) {
-            throw new Error('Action definition parameter must be an object.');
-        }
+        validateAction(action);
 
-        if (!_.isString(action.type)) {
-            throw new Error('Action definition parameter "type" property must be a string.');
-        }
-
-        if (!/^[A-Z\_]+$/.test(action.type)) {
-            throw new Error('Action "type" property value must consist only of uppercase alphabetical characters and underscores.');
-        }
-
-        return iterator(state, action, reducers);
+        return iterator(state, action, reducer);
     };
 };
