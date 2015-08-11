@@ -4,10 +4,44 @@ import {
 
 import Immutable from 'immutable';
 
+import sinon from 'sinon';
+
 import combineReducers from './../src/combineReducers';
 
 describe('combineReducers', () => {
-    describe('when reducer produces a value thats not an instance of Immutable.Iterable', () => {
+    describe('when an instance of reducer is called with {type: @@redux/INIT} action.', () => {
+        let spy;
+        beforeEach(() => {
+            spy = sinon.stub(console, 'info');
+        });
+        afterEach(() => {
+            console.info.restore();
+        });
+        it('produces console.debug message', () => {
+            let reducer,
+                state,
+                action;
+
+            reducer = combineReducers({
+                foos: {
+                    FOO: () => {
+
+                    }
+                }
+            });
+
+            state = Immutable.Map({});
+
+            action = {
+                type: '@@redux/INIT'
+            };
+
+            reducer(state, action);
+
+            expect(spy.calledWithExactly('Ignoring @@redux/INIT. redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.')).to.equal(true);
+        });
+    });
+    describe('when action handler produces a value thats not an instance of Immutable.Iterable', () => {
         it('throws an error', () => {
             let reducer,
                 state,

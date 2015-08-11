@@ -72,6 +72,12 @@ export default (reducer) => {
     validateReducer(reducer);
 
     return (state, action) => {
+        if (action.type === '@@redux/INIT') {
+            console.info('Ignoring @@redux/INIT. redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
+
+            return state;
+        }
+
         validateAction(action);
 
         return iterator(state, action, reducer);
