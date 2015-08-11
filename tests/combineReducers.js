@@ -9,6 +9,38 @@ import sinon from 'sinon';
 import combineReducers from './../src/combineReducers';
 
 describe('combineReducers', () => {
+    describe('when an instance of reducer is called with unknown action', () => {
+        let spy;
+        beforeEach(() => {
+            spy = sinon.stub(console, 'warn');
+        });
+        afterEach(() => {
+            console.warn.restore();
+        });
+        it('produces console.warn message', () => {
+            let reducer,
+                state,
+                action;
+
+            reducer = combineReducers({
+                foos: {
+                    FOO: () => {
+
+                    }
+                }
+            });
+
+            state = Immutable.Map({});
+
+            action = {
+                name: 'UNKNOWN'
+            };
+
+            reducer(state, action);
+
+            expect(spy.calledWith('Unhandled action "UNKNOWN".')).to.equal(true);
+        });
+    });
     describe('when an instance of reducer is called with {type: @@redux/INIT} action.', () => {
         let spy;
         beforeEach(() => {
@@ -17,7 +49,7 @@ describe('combineReducers', () => {
         afterEach(() => {
             console.info.restore();
         });
-        it('produces console.debug message', () => {
+        it('produces console.info message', () => {
             let reducer,
                 state,
                 action;
