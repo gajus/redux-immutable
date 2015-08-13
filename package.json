@@ -10,7 +10,7 @@
     "immutable",
     "redux"
   ],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": {
     "name": "Gajus Kuizinas",
     "email": "gk@anuary.com",
