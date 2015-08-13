@@ -8,6 +8,8 @@ This package provides a single function `combineReducers`, which implements:
 * Immutable state.
 * [Canonical Reducer Composition](https://github.com/gajus/canonical-reducer-composition).
 
+Refer to https://github.com/gajus/redux-immutable-examples for an example of a Redux app using `redux-immutable`.
+
 ## Initial State
 
 You must provide Redux `createStore` with the initial state using Immutable data.
