@@ -25,7 +25,7 @@ gulp.task('dist', ['test'], function () {
         .src('./src/**/*.js')
         .pipe(sourcemaps.init())
         .pipe(babel())
-        .pipe(sourcemaps.write(''))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./dist'));
 });
 
