@@ -41,7 +41,7 @@ describe('combineReducers', () => {
             expect(spy.calledWith('Unhandled action "UNKNOWN".')).to.equal(true);
         });
     });
-    describe('when an instance of reducer is called with {type: @@redux/INIT} action.', () => {
+    describe('when an instance of reducer is called with an action defining type property with a value beginning with "@@".', () => {
         let spy;
         beforeEach(() => {
             spy = sinon.stub(console, 'info');
@@ -70,7 +70,7 @@ describe('combineReducers', () => {
 
             reducer(state, action);
 
-            expect(spy.calledWithExactly('Ignoring @@redux/INIT. redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.')).to.equal(true);
+            expect(spy.calledWithExactly('Ignoring private action "@@redux/INIT". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.')).to.equal(true);
         });
     });
     describe('when action handler produces a value thats not an instance of Immutable.Iterable', () => {

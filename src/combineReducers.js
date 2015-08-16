@@ -76,8 +76,8 @@ export default (reducer) => {
     return (state, action) => {
         let tapper;
 
-        if (action.type === '@@redux/INIT') {
-            console.info('Ignoring @@redux/INIT. redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
+        if (action.type && action.type.indexOf('@@') === 0) {
+            console.info('Ignoring private action "' + action.type + '". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
 
             return state;
         }
