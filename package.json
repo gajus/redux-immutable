@@ -35,7 +35,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "sinon": "^1.15.4"
   },
-  "scrips": {
-    "test": "gulp test"
+  "scripts": {
+    "test": "babel-node ./node_modules/.bin/gulp test"
   }
 }

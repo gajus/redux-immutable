@@ -1,12 +1,10 @@
-var gulp = require('gulp'),
-    mocha = require('gulp-mocha'),
-    eslint = require('gulp-eslint'),
-    babel = require('gulp-babel'),
-    sourcemaps = require('gulp-sourcemaps');
+import gulp from 'gulp';
+import mocha from 'gulp-mocha';
+import eslint from 'gulp-eslint';
+import babel from 'gulp-babel';
+import sourcemaps from 'gulp-sourcemaps';
 
-require('babel/register');
-
-gulp.task('lint', function () {
+gulp.task('lint', () => {
     return gulp
         .src(['./src/**/*.js', './tests/**/*.js'])
         .pipe(eslint())
@@ -14,13 +12,13 @@ gulp.task('lint', function () {
         .pipe(eslint.failOnError());
 });
 
-gulp.task('test', ['lint'], function () {
+gulp.task('test', ['lint'], () => {
     return gulp
-        .src('./tests/**/*.js', {read: false})
+        .src('./tests/**/*.js')
         .pipe(mocha());
 });
 
-gulp.task('dist', ['test'], function () {
+gulp.task('dist', ['test'], () => {
     return gulp
         .src('./src/**/*.js')
         .pipe(sourcemaps.init())
@@ -29,7 +27,7 @@ gulp.task('dist', ['test'], function () {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', () => {
     gulp.watch(['./src/**/*', './tests/**/*'], ['default']);
 });
 
