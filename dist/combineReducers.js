@@ -92,33 +92,24 @@ exports['default'] = function (reducer) {
 
     /**
      * @param {Immutable.Iterable} state
-     * @param {Object|undefined} action
+     * @param {Object} action
      * @return {Immutable.Iterable}
      */
     return function (state, action) {
         var newState = undefined,
-            sanitizedAction = undefined,
             tapper = undefined;
 
-        if (action) {
-            if (action.type && action.type.indexOf('@@') === 0) {
-                console.info('Ignoring private action "' + action.type + '". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
-
-                return state;
-            }
-
-            if (action.name === 'CONSTRUCT') {
-                throw new Error('CONSTRUCT is a reserved action name.');
-            }
-
-            (0, _canonical.validateAction)(action);
-
-            sanitizedAction = action;
-        } else {
-            sanitizedAction = {
-                name: 'CONSTRUCT'
-            };
+        if (!action) {
+            throw new Error('Action parameter value must be an object.');
         }
+
+        if (action.type && action.type.indexOf('@@') === 0) {
+            console.info('Ignoring private action "' + action.type + '". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
+
+            return state;
+        }
+
+        (0, _canonical.validateAction)(action);
 
         // Tapper is an object that tracks execution of the action.
         // @todo Make this an opt-in.
@@ -126,13 +117,11 @@ exports['default'] = function (reducer) {
             isActionHandled: false
         };
 
-        newState = iterator(state, sanitizedAction, reducer, tapper);
+        newState = iterator(state, action, reducer, tapper);
 
-        if (!tapper.isActionHandled && sanitizedAction.name !== 'CONSTRUCT') {
-            console.warn('Unhandled action "' + sanitizedAction.name + '".', sanitizedAction);
+        if (!tapper.isActionHandled && action.name !== 'CONSTRUCT') {
+            console.warn('Unhandled action "' + action.name + '".', action);
         }
-
-        // console.log(`sanitizedAction`, sanitizedAction, `tapper`, tapper);
 
         return newState;
     };

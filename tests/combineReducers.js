@@ -11,31 +11,21 @@ import sinon from 'sinon';
 import combineReducers from './../src/combineReducers';
 
 describe(`combineReducers`, () => {
-    // context('when an instance of a reducer is called with action {name: "CONSTRUCT"}');
-    context(`when an instance of a reducer is called with undefined action`, () => {
-        it(`executes CONSTRUCT action`, () => {
+    context(`when an instance of a reducer is called without an action`, () => {
+        it(`produces an error`, () => {
             let reducer,
-                spy,
                 state;
 
-            spy = sinon.spy(() => {
-                return Immutable.List([]);
-            });
-
-            reducer = combineReducers({
-                foos: {
-                    CONSTRUCT: spy
-                }
-            });
+            reducer = combineReducers({});
 
             state = Immutable.Map({});
 
-            reducer(state);
-
-            expect(spy.calledOnce).to.equal(true);
+            expect(() => {
+                reducer(state);
+            }).to.throw(Error, `Action parameter value must be an object.`);
         });
     });
-    context(`when an instance of a reducer is called with unknown action`, () => {
+    context(`when an instance of a reducer is called with undefined action`, () => {
         let spy;
 
         beforeEach(() => {
@@ -67,8 +57,33 @@ describe(`combineReducers`, () => {
 
             expect(spy.calledWith(`Unhandled action "UNKNOWN".`)).to.equal(true);
         });
+        context(`when action.name is 'CONSTRUCT'`, () => {
+            it(`does not procuce console.warn message`, () => {
+                let action,
+                    reducer,
+                    state;
+
+                reducer = combineReducers({
+                    foos: {
+                        FOO: () => {
+
+                        }
+                    }
+                });
+
+                state = Immutable.Map({});
+
+                action = {
+                    name: `CONSTRUCT`
+                };
+
+                reducer(state, action);
+
+                expect(spy.called).to.equal(false);
+            });
+        });
     });
-    context(`when an instance of a reducer is called with an action defining type property with a value beginning with "@@".`, () => {
+    context(`when an instance of a reducer is called with an action defining a type property with a value beginning with "@@".`, () => {
         let spy;
 
         beforeEach(() => {
