@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 import {
     expect
 } from 'chai';
@@ -8,19 +10,44 @@ import sinon from 'sinon';
 
 import combineReducers from './../src/combineReducers';
 
-describe('combineReducers', () => {
-    describe('when an instance of reducer is called with unknown action', () => {
+describe(`combineReducers`, () => {
+    // context('when an instance of a reducer is called with action {name: "CONSTRUCT"}');
+    context(`when an instance of a reducer is called with undefined action`, () => {
+        it(`executes CONSTRUCT action`, () => {
+            let reducer,
+                spy,
+                state;
+
+            spy = sinon.spy(() => {
+                return Immutable.List([]);
+            });
+
+            reducer = combineReducers({
+                foos: {
+                    CONSTRUCT: spy
+                }
+            });
+
+            state = Immutable.Map({});
+
+            reducer(state);
+
+            expect(spy.calledOnce).to.equal(true);
+        });
+    });
+    context(`when an instance of a reducer is called with unknown action`, () => {
         let spy;
+
         beforeEach(() => {
-            spy = sinon.stub(console, 'warn');
+            spy = sinon.stub(console, `warn`);
         });
         afterEach(() => {
             console.warn.restore();
         });
-        it('produces console.warn message', () => {
-            let reducer,
-                state,
-                action;
+        it(`produces console.warn message`, () => {
+            let action,
+                reducer,
+                state;
 
             reducer = combineReducers({
                 foos: {
@@ -33,26 +60,27 @@ describe('combineReducers', () => {
             state = Immutable.Map({});
 
             action = {
-                name: 'UNKNOWN'
+                name: `UNKNOWN`
             };
 
             reducer(state, action);
 
-            expect(spy.calledWith('Unhandled action "UNKNOWN".')).to.equal(true);
+            expect(spy.calledWith(`Unhandled action "UNKNOWN".`)).to.equal(true);
         });
     });
-    describe('when an instance of reducer is called with an action defining type property with a value beginning with "@@".', () => {
+    context(`when an instance of a reducer is called with an action defining type property with a value beginning with "@@".`, () => {
         let spy;
+
         beforeEach(() => {
-            spy = sinon.stub(console, 'info');
+            spy = sinon.stub(console, `info`);
         });
         afterEach(() => {
             console.info.restore();
         });
-        it('produces console.info message', () => {
-            let reducer,
-                state,
-                action;
+        it(`produces console.info message`, () => {
+            let action,
+                reducer,
+                state;
 
             reducer = combineReducers({
                 foos: {
@@ -65,19 +93,19 @@ describe('combineReducers', () => {
             state = Immutable.Map({});
 
             action = {
-                type: '@@redux/INIT'
+                type: `@@redux/INIT`
             };
 
             reducer(state, action);
 
-            expect(spy.calledWithExactly('Ignoring private action "@@redux/INIT". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.')).to.equal(true);
+            expect(spy.calledWithExactly(`Ignoring private action "@@redux/INIT". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.`)).to.equal(true);
         });
     });
-    describe('when action handler produces a value thats not an instance of Immutable.Iterable', () => {
-        it('throws an error', () => {
-            let reducer,
-                state,
-                action;
+    context(`when action handler produces a value thats not an instance of Immutable.Iterable`, () => {
+        it(`throws an error`, () => {
+            let action,
+                reducer,
+                state;
 
             reducer = combineReducers({
                 foos: {
@@ -90,26 +118,26 @@ describe('combineReducers', () => {
             state = Immutable.Map({});
 
             action = {
-                name: 'FOO'
+                name: `FOO`
             };
 
             // @todo Should name the full domain namespace, e.g. foo.bar.baz.
 
             expect(() => {
                 reducer(state, action);
-            }).to.throw(Error, 'Reducer must return an instance of Immutable.Iterable. "foos" domain "FOO" action handler result is "undefined".');
+            }).to.throw(Error, `Reducer must return an instance of Immutable.Iterable. "foos" domain "FOO" action handler result is "undefined".`);
         });
     });
 
-    describe('when reducers parameter is a valid reducers definition object', () => {
-        it('produces a new state using the reducer', () => {
+    context(`when reducers parameter is a valid reducers definition object`, () => {
+        it(`produces a new state using the reducer`, () => {
             let reducer,
                 state;
 
             reducer = combineReducers({
                 foos: {
                     FOO: (fooState) => {
-                        return fooState.set('bar', 2);
+                        return fooState.set(`bar`, 2);
                     }
                 }
             });
@@ -120,19 +148,19 @@ describe('combineReducers', () => {
                 }
             });
 
-            state = reducer(state, {name: 'FOO'});
+            state = reducer(state, {name: `FOO`});
 
-            expect(state.get('foos').get('bar')).to.equal(2);
+            expect(state.get(`foos`).get(`bar`)).to.equal(2);
         });
 
-        it('reducer does not mutate the original state', () => {
+        it(`reducer does not mutate the original state`, () => {
             let reducer,
                 state;
 
             reducer = combineReducers({
                 foos: {
                     FOO: (fooState) => {
-                        return fooState.set('bar', 2);
+                        return fooState.set(`bar`, 2);
                     }
                 }
             });
@@ -143,9 +171,9 @@ describe('combineReducers', () => {
                 }
             });
 
-            reducer(state, {name: 'FOO'});
+            reducer(state, {name: `FOO`});
 
-            expect(state.get('foos').get('bar')).to.equal(1);
+            expect(state.get(`foos`).get(`bar`)).to.equal(1);
         });
     });
 });

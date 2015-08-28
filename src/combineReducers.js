@@ -6,9 +6,9 @@ import {
     validateAction
 } from 'canonical';
 
-let iterator,
+let isActionMap,
     isDomainMap,
-    isActionMap;
+    iterator;
 
 /**
  * @param {Object.<string, Object>} map
@@ -31,60 +31,83 @@ isActionMap = (map) => {
  * @param {Object} action
  * @param {String} action.name
  * @param {Object} collection
- * @return {Object} domain
+ * @param {Object} tapper
+ * @return {Object}
  */
 iterator = (domain, action, collection, tapper) => {
+    let newDomain;
+
     if (!Immutable.Iterable.isIterable(domain)) {
-        throw new Error('Domain must be an instance of Immutable.Iterable.');
+        throw new Error(`Domain must be an instance of Immutable.Iterable.`);
     }
 
-    // console.log('domain', domain, 'action', action, 'definition', collection);
+    newDomain = domain;
+
+    // console.log(`domain`, domain, `action`, action, `definition`, collection);
 
     _.forEach(collection, (value, domainName) => {
-        // console.log('value', value, 'domain', domainName, 'isActionMap', isActionMap(value), 'isDomainMap', isDomainMap(value));
+        // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
 
         if (isActionMap(value)) {
-            // console.log('action.name', action.name, 'value[action.name]', typeof value[action.name]);
+            // console.log(`action.name`, action.name, `value[action.name]`, typeof value[action.name]);
 
             if (value[action.name]) {
                 let result;
 
                 tapper.isActionHandled = true;
 
-                result = value[action.name](domain.get(domainName), action);
+                result = value[action.name](newDomain.get(domainName), action);
 
                 if (!Immutable.Iterable.isIterable(result)) {
-                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.name + '" action handler result is "' + typeof result + '".');
+                    throw new Error(`Reducer must return an instance of Immutable.Iterable. "${domainName}" domain "${action.name}" action handler result is "${typeof result}".`);
                 }
 
-                domain = domain.set(domainName, result);
+                newDomain = newDomain.set(domainName, result);
             }
         } else if (isDomainMap(value)) {
-            domain = domain.set(domainName, iterator(domain.get(domainName), action, value, tapper))
+            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName), action, value, tapper));
         }
     });
 
-    return domain;
+    return newDomain;
 };
 
 /**
  * @param {Object} reducer
+ * @return {Function}
  */
 export default (reducer) => {
     validateReducer(reducer);
 
-    console.log('CONSTRUCT');
-
+    /**
+     * @param {Immutable.Iterable} state
+     * @param {Object|undefined} action
+     * @return {Immutable.Iterable}
+     */
     return (state, action) => {
-        let tapper;
+        let newState,
+            sanitizedAction,
+            tapper;
 
-        if (action.type && action.type.indexOf('@@') === 0) {
-            console.info('Ignoring private action "' + action.type + '". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
+        if (action) {
+            if (action.type && action.type.indexOf(`@@`) === 0) {
+                console.info(`Ignoring private action "${action.type}". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.`);
 
-            return state;
+                return state;
+            }
+
+            if (action.name === `CONSTRUCT`) {
+                throw new Error(`CONSTRUCT is a reserved action name.`);
+            }
+
+            validateAction(action);
+
+            sanitizedAction = action;
+        } else {
+            sanitizedAction = {
+                name: `CONSTRUCT`
+            };
         }
-
-        validateAction(action);
 
         // Tapper is an object that tracks execution of the action.
         // @todo Make this an opt-in.
@@ -92,12 +115,14 @@ export default (reducer) => {
             isActionHandled: false
         };
 
-        state = iterator(state, action, reducer, tapper);
+        newState = iterator(state, sanitizedAction, reducer, tapper);
 
-        if (!tapper.isActionHandled) {
-            console.warn('Unhandled action "' + action.name + '".', action);
+        if (!tapper.isActionHandled && sanitizedAction.name !== `CONSTRUCT`) {
+            console.warn(`Unhandled action "${sanitizedAction.name}".`, sanitizedAction);
         }
 
-        return state;
+        // console.log(`sanitizedAction`, sanitizedAction, `tapper`, tapper);
+
+        return newState;
     };
 };
