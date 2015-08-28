@@ -12,7 +12,7 @@ Refer to https://github.com/gajus/redux-immutable-examples for an example of a R
 
 ## Initial State
 
-You must provide Redux `createStore` with the initial state using Immutable data.
+You can provide Redux `createStore` with the initial state using Immutable data, e.g.
 
 ```js
 import {
@@ -27,9 +27,11 @@ import Immutable from 'immutable';
 
 import * as reducers from './reducers';
 
-let app,
+let reducer,
     store,
     state;
+
+reducer = combineReducers(reducers);
 
 state = {};
 
@@ -41,10 +43,34 @@ state.countries = [
 
 state = Immutable.fromJS(state);
 
-app = combineReducers(reducers);
-store = createStore(app, state);
+// Required to construct domain state.
+state = reducer(state);
+store = createStore(reducer, state);
 
 export default store;
+```
+
+A domain reducer can initialize the state of the domain using `CONSTRUCT` method, e.g.
+
+```js
+export default {
+    // Implementing country domain reducers using arrow function syntax.
+    countries: {
+        CONSTRUCT: () => {
+            return Immutable.List([
+                'IT',
+                'JP',
+                'DE'
+            ]);
+        }
+        ADD_COUNTRY: (domain, action) => {
+            return domain.push(action.country);
+        },
+        REMOVE_COUNTRY: (domain, action) => {
+            return domain.delete(domain.indexOf(action.country));
+        }
+    }
+}
 ```
 
 ## Unpacking Immutable State
