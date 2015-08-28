@@ -84,6 +84,8 @@ iterator = function (domain, action, collection, tapper) {
 exports['default'] = function (reducer) {
     (0, _canonical.validateReducer)(reducer);
 
+    console.log('CONSTRUCT');
+
     return function (state, action) {
         var tapper = undefined;
 

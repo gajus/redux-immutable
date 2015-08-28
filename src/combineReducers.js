@@ -73,6 +73,8 @@ iterator = (domain, action, collection, tapper) => {
 export default (reducer) => {
     validateReducer(reducer);
 
+    console.log('CONSTRUCT');
+
     return (state, action) => {
         let tapper;
 
