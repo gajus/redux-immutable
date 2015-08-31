@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import every from 'lodash.every';
+import isPlainObject from 'lodash.isplainobject';
+import isFunction from 'lodash.isfunction';
+import forEach from 'lodash.foreach';
 
 import Immutable from 'immutable';
 import {
@@ -15,7 +18,7 @@ let isActionMap,
  * @return {Boolean} If every object property value is a plain object.
  */
 isDomainMap = (map) => {
-    return _.every(map, _.isPlainObject);
+    return every(map, isPlainObject);
 };
 
 /**
@@ -23,7 +26,7 @@ isDomainMap = (map) => {
  * @return {Boolean} If every object property value is a function.
  */
 isActionMap = (map) => {
-    return _.every(map, _.isFunction);
+    return every(map, isFunction);
 };
 
 /**
@@ -42,10 +45,9 @@ iterator = (domain, action, collection, tapper) => {
     }
 
     newDomain = domain;
-
     // console.log(`domain`, domain, `action`, action, `definition`, collection);
 
-    _.forEach(collection, (value, domainName) => {
+    forEach(collection, (value, domainName) => {
         // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
 
         if (isActionMap(value)) {
