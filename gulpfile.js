@@ -18,7 +18,7 @@ gulp.task('test', ['lint'], () => {
         .pipe(mocha());
 });
 
-gulp.task('dist', ['test'], () => {
+gulp.task('build', ['test'], () => {
     return gulp
         .src('./src/**/*.js')
         .pipe(sourcemaps.init())

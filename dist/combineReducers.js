@@ -6,9 +6,9 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _lodash = require('lodash');
+var _utils = require('./utils');
 
-var _lodash2 = _interopRequireDefault(_lodash);
+var _utils2 = _interopRequireDefault(_utils);
 
 var _immutable = require('immutable');
 
@@ -25,7 +25,7 @@ var isActionMap = undefined,
  * @return {Boolean} If every object property value is a plain object.
  */
 isDomainMap = function (map) {
-    return _lodash2['default'].every(map, _lodash2['default'].isPlainObject);
+    return _utils2['default'].every(map, _utils2['default'].isPlainObject);
 };
 
 /**
@@ -33,7 +33,7 @@ isDomainMap = function (map) {
  * @return {Boolean} If every object property value is a function.
  */
 isActionMap = function (map) {
-    return _lodash2['default'].every(map, _lodash2['default'].isFunction);
+    return _utils2['default'].every(map, _utils2['default'].isFunction);
 };
 
 /**
@@ -55,7 +55,7 @@ iterator = function (domain, action, collection, tapper) {
 
     // console.log(`domain`, domain, `action`, action, `definition`, collection);
 
-    _lodash2['default'].forEach(collection, function (value, domainName) {
+    _utils2['default'].forEach(collection, function (value, domainName) {
         // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
 
         if (isActionMap(value)) {

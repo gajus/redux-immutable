@@ -5,9 +5,7 @@ import {
 } from 'chai';
 
 import Immutable from 'immutable';
-
 import sinon from 'sinon';
-
 import combineReducers from './../src/combineReducers';
 
 describe(`combineReducers`, () => {
