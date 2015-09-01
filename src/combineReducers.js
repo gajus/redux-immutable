@@ -65,7 +65,7 @@ iterator = (domain, action, collection, tapper) => {
                 newDomain = newDomain.set(domainName, result);
             }
         } else if (isDomainMap(value)) {
-            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName), action, value, tapper));
+            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || Immutable.Map(), action, value, tapper));
         }
     });
 
