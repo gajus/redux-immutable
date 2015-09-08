@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import {
     validateReducer,
     validateAction
-} from 'canonical';
+} from 'canonical-reducer-composition-validator';
 
 let isActionMap,
     isDomainMap,
