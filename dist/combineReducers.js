@@ -14,7 +14,7 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _canonical = require('canonical');
+var _canonicalReducerCompositionValidator = require('canonical-reducer-composition-validator');
 
 var isActionMap = undefined,
     isDomainMap = undefined,
@@ -88,7 +88,7 @@ iterator = function (domain, action, collection, tapper) {
  */
 
 exports['default'] = function (reducer) {
-    (0, _canonical.validateReducer)(reducer);
+    (0, _canonicalReducerCompositionValidator.validateReducer)(reducer);
 
     /**
      * @param {Immutable.Iterable} state
@@ -109,7 +109,7 @@ exports['default'] = function (reducer) {
             return state;
         }
 
-        (0, _canonical.validateAction)(action);
+        (0, _canonicalReducerCompositionValidator.validateAction)(action);
 
         // Tapper is an object that tracks execution of the action.
         // @todo Make this an opt-in.
