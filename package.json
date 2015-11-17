@@ -32,7 +32,6 @@
     "lint": "npm run pragmatist lint",
     "test": "npm run pragmatist test",
     "build": "npm run pragmatist build",
-    "watch": "npm run pragmatist watch",
-    "preversion": "npm run lint && npm run test && npm run build"
+    "watch": "npm run pragmatist watch"
   }
 }
