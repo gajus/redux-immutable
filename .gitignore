@@ -1,2 +1,6 @@
-/node_modules
-npm-debug.log
+node_modules
+coverage
+dist
+.coveralls.yml
+.DS_Store
+*.log

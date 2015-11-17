@@ -1,1 +1,1 @@
-{"version":3,"sources":["index.js"],"names":[],"mappings":";;;;;;;;;gCAC4B,mBAAmB;;;;QAAxC,eAAe","file":"index.js","sourcesContent":["/* eslint-disable object-curly-spacing */\nexport combineReducers from './combineReducers';\n"],"sourceRoot":"/source/"}
+{"version":3,"sources":["index.js"],"names":[],"mappings":";;;;;;;;;;;;;QAAO,eAAe","file":"index.js","sourcesContent":["export combineReducers from './combineReducers';\n"],"sourceRoot":"/source/"}

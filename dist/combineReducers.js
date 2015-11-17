@@ -1,10 +1,8 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _utils = require('./utils');
 
@@ -16,6 +14,10 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 var _canonicalReducerCompositionValidator = require('canonical-reducer-composition-validator');
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
 var isActionMap = undefined,
     isDomainMap = undefined,
     iterator = undefined;
@@ -25,7 +27,7 @@ var isActionMap = undefined,
  * @return {Boolean} If every object property value is a plain object.
  */
 isDomainMap = function (map) {
-    return _utils2['default'].every(map, _utils2['default'].isPlainObject);
+    return _utils2.default.every(map, _utils2.default.isPlainObject);
 };
 
 /**
@@ -33,7 +35,7 @@ isDomainMap = function (map) {
  * @return {Boolean} If every object property value is a function.
  */
 isActionMap = function (map) {
-    return _utils2['default'].every(map, _utils2['default'].isFunction);
+    return _utils2.default.every(map, _utils2.default.isFunction);
 };
 
 /**
@@ -47,7 +49,7 @@ isActionMap = function (map) {
 iterator = function (domain, action, collection, tapper) {
     var newDomain = undefined;
 
-    if (!_immutable2['default'].Iterable.isIterable(domain)) {
+    if (!_immutable2.default.Iterable.isIterable(domain)) {
         throw new Error('Domain must be an instance of Immutable.Iterable.');
     }
 
@@ -55,7 +57,7 @@ iterator = function (domain, action, collection, tapper) {
 
     // console.log(`domain`, domain, `action`, action, `definition`, collection);
 
-    _utils2['default'].forEach(collection, function (value, domainName) {
+    _utils2.default.forEach(collection, function (value, domainName) {
         // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
 
         if (isActionMap(value)) {
@@ -68,14 +70,14 @@ iterator = function (domain, action, collection, tapper) {
 
                 result = value[action.name](newDomain.get(domainName), action);
 
-                if (!_immutable2['default'].Iterable.isIterable(result)) {
-                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.name + '" action handler result is "' + typeof result + '".');
+                if (!_immutable2.default.Iterable.isIterable(result)) {
+                    throw new Error('Reducer must return an instance of Immutable.Iterable. "' + domainName + '" domain "' + action.name + '" action handler result is "' + (typeof result === 'undefined' ? 'undefined' : _typeof(result)) + '".');
                 }
 
                 newDomain = newDomain.set(domainName, result);
             }
         } else if (isDomainMap(value)) {
-            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || _immutable2['default'].Map(), action, value, tapper));
+            newDomain = newDomain.set(domainName, iterator(newDomain.get(domainName) || _immutable2.default.Map(), action, value, tapper));
         }
     });
 
@@ -87,7 +89,7 @@ iterator = function (domain, action, collection, tapper) {
  * @return {Function}
  */
 
-exports['default'] = function (reducer) {
+exports.default = function (reducer) {
     (0, _canonicalReducerCompositionValidator.validateReducer)(reducer);
 
     /**
@@ -126,6 +128,4 @@ exports['default'] = function (reducer) {
         return newState;
     };
 };
-
-module.exports = exports['default'];
 //# sourceMappingURL=combineReducers.js.map

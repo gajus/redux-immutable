@@ -1,32 +1,31 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _isPlainObject = require('lodash/lang/isPlainObject');
 
-var _lodashLangIsPlainObject = require('lodash/lang/isPlainObject');
+var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-var _lodashLangIsPlainObject2 = _interopRequireDefault(_lodashLangIsPlainObject);
+var _isFunction = require('lodash/lang/isFunction');
 
-var _lodashLangIsFunction = require('lodash/lang/isFunction');
+var _isFunction2 = _interopRequireDefault(_isFunction);
 
-var _lodashLangIsFunction2 = _interopRequireDefault(_lodashLangIsFunction);
+var _every = require('lodash/collection/every');
 
-var _lodashCollectionEvery = require('lodash/collection/every');
+var _every2 = _interopRequireDefault(_every);
 
-var _lodashCollectionEvery2 = _interopRequireDefault(_lodashCollectionEvery);
+var _forEach = require('lodash/collection/forEach');
 
-var _lodashCollectionForEach = require('lodash/collection/forEach');
+var _forEach2 = _interopRequireDefault(_forEach);
 
-var _lodashCollectionForEach2 = _interopRequireDefault(_lodashCollectionForEach);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports['default'] = {
-    isPlainObject: _lodashLangIsPlainObject2['default'],
-    isFunction: _lodashLangIsFunction2['default'],
-    every: _lodashCollectionEvery2['default'],
-    forEach: _lodashCollectionForEach2['default']
+exports.default = {
+    isPlainObject: _isPlainObject2.default,
+    isFunction: _isFunction2.default,
+    every: _every2.default,
+    forEach: _forEach2.default
 };
-module.exports = exports['default'];
 //# sourceMappingURL=utils.js.map
