@@ -24,7 +24,7 @@ var isActionMap = undefined,
 
 /**
  * @param {Object.<string, Object>} map
- * @return {Boolean} If every object property value is a plain object.
+ * @return {boolean} If every object property value is a plain object.
  */
 isDomainMap = function (map) {
     return _utils2.default.every(map, _utils2.default.isPlainObject);
@@ -32,7 +32,7 @@ isDomainMap = function (map) {
 
 /**
  * @param {Object.<string, Function>} map
- * @return {Boolean} If every object property value is a function.
+ * @return {boolean} If every object property value is a function.
  */
 isActionMap = function (map) {
     return _utils2.default.every(map, _utils2.default.isFunction);
@@ -41,7 +41,7 @@ isActionMap = function (map) {
 /**
  * @param {Object} domain
  * @param {Object} action
- * @param {String} action.name
+ * @param {string} action.name
  * @param {Object} collection
  * @param {Object} tapper
  * @return {Object}
@@ -55,13 +55,13 @@ iterator = function (domain, action, collection, tapper) {
 
     newDomain = domain;
 
-    // console.log(`domain`, domain, `action`, action, `definition`, collection);
+    // console.log('domain', domain, 'action', action, 'definition', collection);
 
     _utils2.default.forEach(collection, function (value, domainName) {
-        // console.log(`value`, value, `domain`, domainName, `isActionMap`, isActionMap(value), `isDomainMap`, isDomainMap(value));
+        // console.log('value', value, 'domain', domainName, 'isActionMap', isActionMap(value), 'isDomainMap', isDomainMap(value));
 
         if (isActionMap(value)) {
-            // console.log(`action.name`, action.name, `value[action.name]`, typeof value[action.name]);
+            // console.log('action.name', action.name, 'value[action.name]', typeof value[action.name]);
 
             if (value[action.name]) {
                 var result = undefined;
@@ -106,7 +106,9 @@ exports.default = function (reducer) {
         }
 
         if (action.type && action.type.indexOf('@@') === 0) {
+            /* eslint-disable no-console */
             console.info('Ignoring private action "' + action.type + '". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
+            /* eslint-enable no-console */
 
             return state;
         }
@@ -122,7 +124,9 @@ exports.default = function (reducer) {
         newState = iterator(state, action, reducer, tapper);
 
         if (!tapper.isActionHandled && action.name !== 'CONSTRUCT') {
+            /* eslint-disable no-console */
             console.warn('Unhandled action "' + action.name + '".', action);
+            /* eslint-enable no-console */
         }
 
         return newState;
