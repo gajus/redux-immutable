@@ -1,6 +1,9 @@
 node_modules
 coverage
 dist
-.coveralls.yml
-.DS_Store
 *.log
+.*
+!.gitignore
+!.npmignore
+!.babelrc
+!.travis.yml
