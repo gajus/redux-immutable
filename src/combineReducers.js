@@ -1,4 +1,4 @@
-import _ from './utils';
+import _ from 'lodash';
 
 import Immutable from 'immutable';
 import {
@@ -92,7 +92,7 @@ export default (reducer) => {
             throw new Error('Action parameter value must be an object.');
         }
 
-        if (action.type && action.type.indexOf('@@') === 0) {
+        if (action.type && _.indexOf(action.type, '@@') === 0) {
             /* eslint-disable no-console */
             console.info('Ignoring private action "' + action.type + '". redux-immutable does not support state inflation. Refer to https://github.com/gajus/canonical-reducer-composition/issues/1.');
             /* eslint-enable no-console */
