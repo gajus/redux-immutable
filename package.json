@@ -1,6 +1,6 @@
 {
   "name": "redux-immutable",
-  "description": "Streamlines use of Immutable.js with Redux reducers.",
+  "description": "redux-immutable is used to create an equivalent function of Redux combineReducers that works with Immutable.js state.",
   "main": "./dist/index.js",
   "repository": {
     "type": "git",
