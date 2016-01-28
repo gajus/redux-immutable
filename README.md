@@ -8,22 +8,6 @@
 
 When Redux [`createStore`](https://github.com/rackt/redux/blob/master/docs/api/createStore.md) `reducer` is created using `redux-immutable` then `initialState` must be an instance of [`Immutable.Iterable`](https://facebook.github.io/immutable-js/docs/#/Iterable).
 
-## API
-
-```js
-/**
- * @typedef {Object}
- * @property {boolean} debug Validates each reducer invocation and uses console.error to report unexpected state, reducer or action definition.
- */
-
-/**
- * @type Function
- * @param {UserOptionsType} userOptions
- * @returns {Function} Returns function equivalent to Redux combineReducers that accepts an instance of Immutable.js Immutable.Iterable to manage Immutable state.
- */
-createCombineReducers;
-```
-
 ## Problem
 
 When [`createStore`](https://github.com/rackt/redux/blob/master/docs/api/createStore.md) is invoked with `initialState` that is an instance of `Immutable.Iterable` further invocation of reducer will [produce an error](https://github.com/rackt/redux/blob/v3.0.6/src/combineReducers.js#L31-L38):
@@ -37,27 +21,13 @@ This is because Redux `combineReducers` [treats `state` object as a plain JavaSc
 
 ## Usage
 
-Use `createCombineReducers` to create `combineReducers` function:
-
-```js
-import {
-    createCombineReducers
-} from 'redux-immutable';
-
-let combineReducers,
-    rootReducer;
-
-combineReducers = createCombineReducers({
-    debug: process.env.NODE_ENV !== 'production'
-});
-
-// @see http://rackt.org/redux/docs/api/combineReducers.html
-combineReducers;
-```
-
 Create a store with `initialState` set to an instance of [`Immutable.Iterable`](https://facebook.github.io/immutable-js/docs/#/Iterable):
 
 ```js
+import {
+    combineReducers
+} from 'redux-immutable';
+
 import {
     createStore
 } from 'redux';

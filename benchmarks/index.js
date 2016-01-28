@@ -14,7 +14,6 @@ new Benchmark.Suite()
             },
             setup: () => {
                 var combineReducers,
-                    createCombineReducers,
                     initialState,
                     rootReducer;
 
@@ -30,8 +29,7 @@ new Benchmark.Suite()
                     }
                 });
 
-                createCombineReducers = require('./../dist/createCombineReducers');
-                combineReducers = createCombineReducers();
+                combineReducers = require('./../dist/combineReducers');
                 // combineReducers = require('redux-immutablejs').combineReducers;
 
                 rootReducer = combineReducers({

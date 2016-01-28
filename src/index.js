@@ -1,5 +1,5 @@
-import createCombineReducers from './createCombineReducers';
+import combineReducers from './combineReducers';
 
 export {
-    createCombineReducers
+    combineReducers
 };

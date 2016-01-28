@@ -6,16 +6,13 @@ import {
 
 import Immutable from 'immutable';
 
-import createCombineReducers from './../src/createCombineReducers';
+import combineReducers from './../src/combineReducers';
 
-describe('createCombineReducers()', () => {
+describe('combineReducers()', () => {
     context('reducer returns received state', () => {
         it('returns initial state', () => {
-            let combineReducers,
-                initialState,
+            let initialState,
                 rootReducer;
-
-            combineReducers = createCombineReducers();
 
             rootReducer = combineReducers({
                 foo: (state) => {
@@ -34,11 +31,8 @@ describe('createCombineReducers()', () => {
     });
     context('reducer creates new domain state', () => {
         it('returns new state', () => {
-            let combineReducers,
-                initialState,
+            let initialState,
                 rootReducer;
-
-            combineReducers = createCombineReducers();
 
             rootReducer = combineReducers({
                 foo: (state) => {
