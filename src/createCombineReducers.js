@@ -13,8 +13,6 @@ export default (userOptions : Object = {}) => {
 
     return (reducers: Object) => {
         return (inputState, action) => {
-            let nextState;
-
             if (options.debug) {
                 let warningMessage;
 
@@ -27,22 +25,21 @@ export default (userOptions : Object = {}) => {
                 }
             }
 
-            nextState = inputState;
+            return inputState
+                .withMutations((temporaryState) => {
+                    _.forEach(reducers, (reducer, reducerName) => {
+                        let currentDomainState,
+                            nextDomainState;
 
-            _.forEach(reducers, (reducer, reducerName) => {
-                let currentDomainState,
-                    nextDomainState;
+                        currentDomainState = temporaryState.get(reducerName);
 
-                currentDomainState = nextState.get(reducerName);
+                        nextDomainState = reducer(currentDomainState, action);
 
-                nextDomainState = reducer(currentDomainState, action);
+                        validateNextState(nextDomainState, reducerName, action);
 
-                validateNextState(nextDomainState, reducerName, action);
-
-                nextState = nextState.set(reducerName, nextDomainState);
-            });
-
-            return nextState;
+                        temporaryState.set(reducerName, nextDomainState);
+                    });
+                });
         };
     };
 };
