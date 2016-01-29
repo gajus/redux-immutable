@@ -39,6 +39,6 @@
     "watch-lint": "npm run pragmatist watch-lint",
     "watch-test": "npm run pragmatist watch-test",
     "watch-build": "npm run pragmatist watch-build",
-    "benchmark": "node ./benchmarks/index.js"
+    "benchmark": "NODE_ENV=production node ./benchmarks/index.js"
   }
 }
