@@ -78,4 +78,4 @@ reduxRouterMiddleware.listenForReplays(store, (state) => {
 });
 ```
 
-The `['route', 'location']` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `route` property of `rootReducer`.
+The `['route', 'location']` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `route` property of the `rootReducer`.
