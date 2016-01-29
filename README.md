@@ -45,7 +45,7 @@ store = createStore(rootReducer, initialState);
 
 ### Using with `react-router-redux`
 
-`react-router-redux` [`routeReducer`](https://github.com/rackt/react-router-redux#routereducer) does not work with Immutable.js. You need to use a custom reducer:
+`react-router-redux` [`routeReducer`](https://github.com/rackt/react-router-redux/tree/2.1.0#routereducer) does not work with Immutable.js. You need to use a custom reducer:
 
 ```js
 import Immutable from 'immutable';
@@ -70,7 +70,7 @@ export default (state = initialState, action) => {
 };
 ```
 
-If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/react-router-redux#reduxmiddlewarelistenforreplaysstore-reduxstore-selectlocationstate-function), then you need to define a custom `selectLocationState` function:
+If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/react-router-redux/tree/2.1.0#reduxmiddlewarelistenforreplaysstore-reduxstore-selectlocationstate-function), then you need to define a custom `selectLocationState` function:
 
 ```js
 reduxRouterMiddleware.listenForReplays(store, (state) => {
@@ -78,4 +78,4 @@ reduxRouterMiddleware.listenForReplays(store, (state) => {
 });
 ```
 
-The path (`['route', 'location']`) used in `selectLocationState` depends on the state object of the app.
+The `['route', 'location']` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `route` property of `rootReducer`.
