@@ -43,7 +43,7 @@ rootReducer = combineReducers({});
 store = createStore(rootReducer, initialState);
 ```
 
-## Using with `react-router-redux`
+### Using with `react-router-redux`
 
 `react-router-redux` [`routeReducer`](https://github.com/rackt/react-router-redux#routereducer) does not work with Immutable.js. You need to use a custom reducer:
 
@@ -68,6 +68,7 @@ export default (state = initialState, action) => {
 
     return state;
 };
+
 ```
 
 If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/react-router-redux#reduxmiddlewarelistenforreplaysstore-reduxstore-selectlocationstate-function), then you need to define a custom `selectLocationState` function:
@@ -76,4 +77,5 @@ If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/r
 reduxRouterMiddleware.listenForReplays(store, (state) => {
     return state.getIn(['route', 'location']).toJS();
 });
+
 ```
