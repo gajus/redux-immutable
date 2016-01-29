@@ -18,9 +18,7 @@
   },
   "license": "BSD-3-Clause",
   "dependencies": {
-    "immutable": "^3.7.6",
-    "lodash": "^4.0.1",
-    "pluralize": "^1.2.1"
+    "immutable": "^3.7.6"
   },
   "devDependencies": {
     "benchmark": "^2.1.0",

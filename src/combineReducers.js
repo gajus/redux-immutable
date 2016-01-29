@@ -1,10 +1,11 @@
-import _ from 'lodash';
 import {
     getUnexpectedInvocationParameterMessage,
     validateNextState
 } from './utilities';
 
 export default (reducers: Object) => {
+    let reducerKeys = Object.keys(reducers);
+
     return (inputState, action) => {
         /* eslint-disable no-process-env */
         if (process.env.NODE_ENV !== 'production') {
@@ -22,9 +23,12 @@ export default (reducers: Object) => {
 
         return inputState
             .withMutations((temporaryState) => {
-                _.forEach(reducers, (reducer, reducerName) => {
-                    let currentDomainState,
+                reducerKeys.forEach((reducerName) => {
+                    let reducer,
+                        currentDomainState,
                         nextDomainState;
+
+                    reducer = reducers[reducerName];
 
                     currentDomainState = temporaryState.get(reducerName);
 
