@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import Immutable from 'immutable';
 import getStateName from './getStateName';
 
@@ -7,9 +6,9 @@ export default (state: Object, reducers: Object, action: Object) => {
         stateName,
         unexpectedStatePropertyNames;
 
-    reducerNames = _.keys(reducers);
+    reducerNames = Object.keys(reducers);
 
-    if (_.isEmpty(reducerNames)) {
+    if (!reducerNames.length) {
         return 'Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.';
     }
 
@@ -19,11 +18,11 @@ export default (state: Object, reducers: Object, action: Object) => {
         return 'The ' + stateName + ' is of unexpected type. Expected argument to be an instance of Immutable.Iterable with the following properties: "' + reducerNames.join('", "') + '".';
     }
 
-    unexpectedStatePropertyNames = _.filter(state.keySeq().toArray(), (name) => {
+    unexpectedStatePropertyNames = state.keySeq().toArray().filter((name) => {
         return !reducers.hasOwnProperty(name);
     });
 
-    if (!_.isEmpty(unexpectedStatePropertyNames)) {
+    if (unexpectedStatePropertyNames.length > 0) {
         return 'Unexpected ' + (unexpectedStatePropertyNames.length === 1 ? 'property' : 'properties') + ' "' + unexpectedStatePropertyNames.join('", "') + '" found in ' + stateName + '. Expected to find one of the known reducer property names instead: "' + reducerNames.join('", "') + '". Unexpected properties will be ignored.';
     }
 
