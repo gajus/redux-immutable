@@ -18,7 +18,6 @@
   },
   "license": "BSD-3-Clause",
   "dependencies": {
-    "immutable": "^3.7.6",
     "lodash": "^4.0.1",
     "pluralize": "^1.2.1"
   },
@@ -26,7 +25,11 @@
     "benchmark": "^2.1.0",
     "chai": "^3.5.0",
     "create-index": "0.0.2",
+    "immutable": "^3.7.6",
     "pragmatist": "^3.0.3"
+  },
+  "peerDependencies": {
+    "immutable": "^3.7.6"
   },
   "scripts": {
     "create-index": "create-index ./src/utilities",
