@@ -77,3 +77,5 @@ reduxRouterMiddleware.listenForReplays(store, (state) => {
     return state.getIn(['route', 'location']).toJS();
 });
 ```
+
+The path (`['route', 'location']`) used in `selectLocationState` depends on the state object of the app.
