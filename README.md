@@ -42,3 +42,38 @@ rootReducer = combineReducers({});
 
 store = createStore(rootReducer, initialState);
 ```
+
+## Using with `react-router-redux`
+
+`react-router-redux` [`routeReducer`](https://github.com/rackt/react-router-redux#routereducer) does not work with Immutable.js. You need to use a custom reducer:
+
+```js
+import Immutable from 'immutable';
+import {
+    UPDATE_LOCATION
+} from 'react-router-redux';
+
+let initialState;
+
+initialState = Immutable.fromJS({
+    location: undefined
+});
+
+export default (state = initialState, action) => {
+    if (action.type === UPDATE_LOCATION) {
+        return state.merge({
+            location: action.payload
+        });
+    }
+
+    return state;
+};
+```
+
+If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/react-router-redux#reduxmiddlewarelistenforreplaysstore-reduxstore-selectlocationstate-function), then you need to define a custom `selectLocationState` function:
+
+```js
+reduxRouterMiddleware.listenForReplays(store, (state) => {
+    return state.getIn(['route', 'location']).toJS();
+});
+```
