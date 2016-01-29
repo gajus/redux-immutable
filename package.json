@@ -18,8 +18,7 @@
   },
   "license": "BSD-3-Clause",
   "dependencies": {
-    "lodash": "^4.0.1",
-    "pluralize": "^1.2.1"
+    "lodash": "^4.0.1"
   },
   "devDependencies": {
     "benchmark": "^2.1.0",

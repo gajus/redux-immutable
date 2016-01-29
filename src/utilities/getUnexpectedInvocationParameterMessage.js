@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import Immutable from 'immutable';
-import pluralize from 'pluralize';
 import getStateName from './getStateName';
 
 export default (state: Object, reducers: Object, action: Object) => {
@@ -25,7 +24,7 @@ export default (state: Object, reducers: Object, action: Object) => {
     });
 
     if (!_.isEmpty(unexpectedStatePropertyNames)) {
-        return 'Unexpected ' + pluralize('property', unexpectedStatePropertyNames.length) + ' "' + unexpectedStatePropertyNames.join('", "') + '" found in ' + stateName + '. Expected to find one of the known reducer property names instead: "' + reducerNames.join('", "') + '". Unexpected properties will be ignored.';
+        return 'Unexpected ' + (unexpectedStatePropertyNames.length === 1 ? 'property' : 'properties') + ' "' + unexpectedStatePropertyNames.join('", "') + '" found in ' + stateName + '. Expected to find one of the known reducer property names instead: "' + reducerNames.join('", "') + '". Unexpected properties will be ignored.';
     }
 
     return null;
