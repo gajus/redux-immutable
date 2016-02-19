@@ -4,9 +4,9 @@
 
 declare module 'redux-immutable' {
 
-  interface ReduxReducersObject {
+  interface ReduxReducersMap {
     [name: string]: Redux.Reducer;
   }
 
-  export default function combineReducers(reducers: ReduxReducersObject): Redux.Middleware;
+  export function combineReducers(reducers: ReduxReducersMap): Redux.Middleware;
 }
