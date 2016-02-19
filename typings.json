@@ -1,0 +1,10 @@
+{
+  "name": "redux-immutable",
+  "main": "typings/redux-immutable.d.ts", 
+  "description": "redux-immutable: equivalent function of Redux combineReducers that works with Immutable.js", 
+  "author": "Alexander Harm", 
+  "ambientDependencies": {
+    "immutable": "github:facebook/immutable-js/type-definitions/Immutable.d.ts", 
+    "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#f3b4f2a582098c5b972666fa2a0363355c2c3775"
+  }
+}
