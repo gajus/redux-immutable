@@ -39,5 +39,6 @@
     "watch-test": "npm run pragmatist watch-test",
     "watch-build": "npm run pragmatist watch-build",
     "benchmark": "NODE_ENV=production node ./benchmarks/index.js"
-  }
+  },
+  "typings": "./typings/redux-immutable.d.ts"
 }
