@@ -21,15 +21,15 @@
   "devDependencies": {
     "benchmark": "^2.1.0",
     "chai": "^3.5.0",
-    "create-index": "0.0.2",
+    "create-index": "0.1.2",
     "immutable": "^3.7.6",
-    "pragmatist": "^3.0.3"
+    "pragmatist": "^3.0.13"
   },
   "peerDependencies": {
     "immutable": "^3.7.6"
   },
   "scripts": {
-    "create-index": "create-index ./src/utilities",
+    "create-index": "create-index --update-index ./src/utilities",
     "pragmatist": "pragmatist --es5",
     "lint": "npm run pragmatist lint",
     "test": "npm run pragmatist test",
