@@ -5,12 +5,18 @@ import {
     validateNextState
 } from './utilities';
 
+import Immutable from 'immutable';
+
 export default (reducers: Object) => {
     let reducerKeys;
 
     reducerKeys = Object.keys(reducers);
 
     return (inputState, action) => {
+        if (inputState === undefined) {
+          inputState = Immutable.Map();
+        }
+
         /* eslint-disable no-process-env */
         if (process.env.NODE_ENV !== 'production') {
         /* eslint-enable no-process-env */
