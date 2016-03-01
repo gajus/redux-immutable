@@ -32,15 +32,9 @@ import {
     createStore
 } from 'redux';
 
-let initialState,
-    rootReducer,
-    store;
-
-initialState = Immutable.Map();
-
-rootReducer = combineReducers({});
-
-store = createStore(rootReducer, initialState);
+const initialState = Immutable.Map();
+const rootReducer = combineReducers({});
+const store = createStore(rootReducer, initialState);
 ```
 
 ### Using with `react-router-redux`
@@ -50,19 +44,17 @@ store = createStore(rootReducer, initialState);
 ```js
 import Immutable from 'immutable';
 import {
-    UPDATE_LOCATION
+    LOCATION_CHANGE
 } from 'react-router-redux';
 
-let initialState;
-
-initialState = Immutable.fromJS({
-    location: undefined
+const initialState = Immutable.fromJS({
+    locationBeforeTransitions: null
 });
 
 export default (state = initialState, action) => {
-    if (action.type === UPDATE_LOCATION) {
+    if (action.type === LOCATION_CHANGE) {
         return state.merge({
-            location: action.payload
+            locationBeforeTransitions: action.payload
         });
     }
 
@@ -74,7 +66,10 @@ If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/r
 
 ```js
 reduxRouterMiddleware.listenForReplays(store, (state) => {
-    return state.getIn(['route', 'location']).toJS();
+    return state.getIn([
+        'route',
+        'locationBeforeTransitions'
+    ]).toJS();
 });
 ```
 
