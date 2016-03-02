@@ -49,4 +49,33 @@ describe('combineReducers()', () => {
             expect(rootReducer(initialState, {type: 'ADD'}).getIn(['foo', 'count'])).to.equal(1);
         });
     });
+    context('root reducer is created from nested combineReducers', () => {
+        it('returns initial state from default values', () => {
+            const initialState = Immutable.fromJS({
+                outer: {
+                    inner1: {
+                        a: true,
+                        b: false
+                    },
+                    inner2: {
+                        a: false,
+                        b: true
+                    }
+                }
+            });
+
+            const rootReducer = combineReducers({
+                outer: combineReducers({
+                    inner1: (state = Immutable.fromJS({a: true, b: false})) => {
+                        return state;
+                    },
+                    inner2: (state = Immutable.fromJS({a: false, b: true})) => {
+                        return state;
+                    }
+                })
+            });
+
+            expect(rootReducer()).to.eql(initialState);
+        });
+    });
 });
