@@ -4,23 +4,19 @@ import Immutable from 'immutable';
 import getStateName from './getStateName';
 
 export default (state: Object, reducers: Object, action: Object) => {
-    let reducerNames,
-        stateName,
-        unexpectedStatePropertyNames;
-
-    reducerNames = Object.keys(reducers);
+    const reducerNames = Object.keys(reducers);
 
     if (!reducerNames.length) {
         return 'Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.';
     }
 
-    stateName = getStateName(action);
+    const stateName = getStateName(action);
 
     if (!Immutable.Iterable.isIterable(state)) {
         return 'The ' + stateName + ' is of unexpected type. Expected argument to be an instance of Immutable.Iterable with the following properties: "' + reducerNames.join('", "') + '".';
     }
 
-    unexpectedStatePropertyNames = state.keySeq().toArray().filter((name) => {
+    const unexpectedStatePropertyNames = state.keySeq().toArray().filter((name) => {
         return !reducers.hasOwnProperty(name);
     });
 

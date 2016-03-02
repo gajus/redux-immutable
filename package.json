@@ -24,7 +24,7 @@
     "benchmark": "^2.1.0",
     "chai": "^3.5.0",
     "create-index": "0.1.2",
-    "pragmatist": "^3.0.13"
+    "pragmatist": "^3.0.16"
   },
   "scripts": {
     "create-index": "create-index --update-index ./src/utilities",

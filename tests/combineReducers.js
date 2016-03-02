@@ -3,24 +3,19 @@
 import {
     expect
 } from 'chai';
-
 import Immutable from 'immutable';
-
 import combineReducers from './../src/combineReducers';
 
 describe('combineReducers()', () => {
     context('reducer returns received state', () => {
         it('returns initial state', () => {
-            let initialState,
-                rootReducer;
-
-            rootReducer = combineReducers({
+            const rootReducer = combineReducers({
                 foo: (state) => {
                     return state;
                 }
             });
 
-            initialState = Immutable.fromJS({
+            const initialState = Immutable.fromJS({
                 foo: {
                     count: 0
                 }
@@ -31,16 +26,13 @@ describe('combineReducers()', () => {
     });
     context('reducer creates new domain state', () => {
         it('returns new state', () => {
-            let initialState,
-                rootReducer;
-
-            rootReducer = combineReducers({
+            const rootReducer = combineReducers({
                 foo: (state) => {
                     return state.set('count', state.get('count') + 1);
                 }
             });
 
-            initialState = Immutable.fromJS({
+            const initialState = Immutable.fromJS({
                 foo: {
                     count: 0
                 }
@@ -53,23 +45,21 @@ describe('combineReducers()', () => {
         it('returns initial state from default values', () => {
             const initialState = Immutable.fromJS({
                 outer: {
-                    inner1: {
-                        a: true,
-                        b: false
-                    },
-                    inner2: {
-                        a: false,
-                        b: true
+                    inner: {
+                        bar: false,
+                        foo: true
                     }
                 }
             });
 
+            const innerDefaultState = Immutable.fromJS({
+                bar: false,
+                foo: true
+            });
+
             const rootReducer = combineReducers({
                 outer: combineReducers({
-                    inner1: (state = Immutable.fromJS({a: true, b: false})) => {
-                        return state;
-                    },
-                    inner2: (state = Immutable.fromJS({a: false, b: true})) => {
+                    inner: (state = innerDefaultState) => {
                         return state;
                     }
                 })

@@ -10,9 +10,7 @@ describe('utilities', () => {
     describe('getStateName()', () => {
         context('action.type is @@redux/INIT', () => {
             it('describes initialState', () => {
-                let expectedStateName;
-
-                expectedStateName = getStateName({
+                const expectedStateName = getStateName({
                     type: '@@redux/INIT'
                 });
 
@@ -21,9 +19,7 @@ describe('utilities', () => {
         });
         context('action.type is anything else', () => {
             it('describes previous state', () => {
-                let expectedStateName;
-
-                expectedStateName = getStateName({});
+                const expectedStateName = getStateName({});
 
                 expect(expectedStateName).to.equal('previous state received by the reducer');
             });

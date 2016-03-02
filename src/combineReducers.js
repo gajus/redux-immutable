@@ -7,12 +7,12 @@ import {
 
 import Immutable from 'immutable';
 
-export default (reducers: Object) => {
+export default (reducers: Object): Function => {
     let reducerKeys;
 
     reducerKeys = Object.keys(reducers);
 
-    return (inputState, action) => {
+    return (inputState: ?Immutable, action: Object): Immutable => {
         if (inputState === undefined) {
           inputState = Immutable.Map();
         }
