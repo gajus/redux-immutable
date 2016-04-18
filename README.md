@@ -39,7 +39,7 @@ const store = createStore(rootReducer, initialState);
 
 ### Using with `react-router-redux`
 
-`react-router-redux` [`routeReducer`](https://github.com/rackt/react-router-redux/tree/2.1.0#routereducer) does not work with Immutable.js. You need to use a custom reducer:
+`react-router-redux` [`routeReducer`](https://github.com/reactjs/react-router-redux/tree/v4.0.2#routerreducer) does not work with Immutable.js. You need to use a custom reducer:
 
 ```js
 import Immutable from 'immutable';
@@ -48,13 +48,13 @@ import {
 } from 'react-router-redux';
 
 const initialState = Immutable.fromJS({
-    locationBeforeTransitions: null
+    location: {}
 });
 
 export default (state = initialState, action) => {
     if (action.type === LOCATION_CHANGE) {
         return state.merge({
-            locationBeforeTransitions: action.payload
+            location: action.payload
         });
     }
 
@@ -62,14 +62,23 @@ export default (state = initialState, action) => {
 };
 ```
 
-If you are using [`ReduxMiddleware.listenForReplays`](https://github.com/rackt/react-router-redux/tree/2.1.0#reduxmiddlewarelistenforreplaysstore-reduxstore-selectlocationstate-function), then you need to define a custom `selectLocationState` function:
+Pass a selector to access the payload state and convert it to a JavaScript object via the [`selectLocationState` option on `syncHistoryWithStore`](https://github.com/reactjs/react-router-redux/tree/v4.0.2#history--synchistorywithstorehistory-store-options):
 
 ```js
-reduxRouterMiddleware.listenForReplays(store, (state) => {
-    return state.getIn([
-        'route',
-        'locationBeforeTransitions'
-    ]).toJS();
+import {
+    browserHistory
+} from 'react-router';
+import {
+    syncHistoryWithStore
+} from 'react-router-redux';
+
+const history = syncHistoryWithStore(browserHistory, store, {
+    selectLocationState (state) {
+        return state.getIn([
+            'route',
+            'location'
+        ]).toJS();
+    } 
 });
 ```
 
