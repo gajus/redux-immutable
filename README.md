@@ -48,13 +48,13 @@ import {
 } from 'react-router-redux';
 
 const initialState = Immutable.fromJS({
-    location: {}
+    locationBeforeTransitions: null
 });
 
 export default (state = initialState, action) => {
     if (action.type === LOCATION_CHANGE) {
         return state.merge({
-            location: action.payload
+            locationBeforeTransitions: action.payload
         });
     }
 
@@ -74,12 +74,9 @@ import {
 
 const history = syncHistoryWithStore(browserHistory, store, {
     selectLocationState (state) {
-        return state.getIn([
-            'route',
-            'location'
-        ]).toJS();
+        return state.get('routing').toJS();
     } 
 });
 ```
 
-The `['route', 'location']` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `route` property of the `rootReducer`.
+The `'routing'` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `routing` property of the `rootReducer`.
