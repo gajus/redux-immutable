@@ -3,7 +3,6 @@
 import {
     expect
 } from 'chai';
-
 import getStateName from './../../src/utilities/getStateName';
 
 describe('utilities', () => {

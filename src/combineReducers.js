@@ -1,48 +1,30 @@
-/* eslint-disable lodash3/prefer-lodash-method */
-
+import Immutable from 'immutable';
 import {
     getUnexpectedInvocationParameterMessage,
     validateNextState
 } from './utilities';
 
-import Immutable from 'immutable';
-
 export default (reducers: Object): Function => {
-    let reducerKeys;
+    const reducerKeys = Object.keys(reducers);
 
-    reducerKeys = Object.keys(reducers);
-
-    return (inputState: ?Immutable, action: Object): Immutable => {
-        if (inputState === undefined) {
-          inputState = Immutable.Map();
-        }
-
-        /* eslint-disable no-process-env */
+    // eslint-disable-next-line space-infix-ops
+    return (inputState: ?Immutable.Map = Immutable.Map(), action: Object): Immutable.Map => {
+        // eslint-disable-next-line no-process-env
         if (process.env.NODE_ENV !== 'production') {
-        /* eslint-enable no-process-env */
-            let warningMessage;
-
-            warningMessage = getUnexpectedInvocationParameterMessage(inputState, reducers, action);
+            const warningMessage = getUnexpectedInvocationParameterMessage(inputState, reducers, action);
 
             if (warningMessage) {
-                /* eslint-disable no-console */
+                // eslint-disable-next-line no-console
                 console.error(warningMessage);
-                /* eslint-enable no-console */
             }
         }
 
         return inputState
             .withMutations((temporaryState) => {
                 reducerKeys.forEach((reducerName) => {
-                    let currentDomainState,
-                        nextDomainState,
-                        reducer;
-
-                    reducer = reducers[reducerName];
-
-                    currentDomainState = temporaryState.get(reducerName);
-
-                    nextDomainState = reducer(currentDomainState, action);
+                    const reducer = reducers[reducerName];
+                    const currentDomainState = temporaryState.get(reducerName);
+                    const nextDomainState = reducer(currentDomainState, action);
 
                     validateNextState(nextDomainState, reducerName, action);
 

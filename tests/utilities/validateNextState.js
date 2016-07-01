@@ -11,9 +11,8 @@ describe('utilities', () => {
         context('state is undefined', () => {
             it('throws an error', () => {
                 expect(() => {
-                    /* eslint-disable no-undefined */
+                    // eslint-disable-next-line eslint-disable no-undefined
                     validateNextState(undefined, 'reducer name', {
-                    /* eslint-enable no-undefined */
                         type: 'foo'
                     });
                 }).to.throw(Error, 'Reducer "reducer name" returned undefined when handling "foo" action. To ignore an action, you must explicitly return the previous state.');
@@ -24,7 +23,6 @@ describe('utilities', () => {
                 const result = validateNextState(Immutable.Map(), 'reducer name', {
                     type: 'foo'
                 });
-
                 expect(result).to.equal(null);
             });
         });

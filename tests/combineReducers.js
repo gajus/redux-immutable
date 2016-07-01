@@ -65,7 +65,7 @@ describe('combineReducers()', () => {
                 })
             });
 
-            expect(rootReducer()).to.eql(initialState);
+            expect(rootReducer(undefined, {})).to.eql(initialState);
         });
     });
 });

@@ -1,5 +1,1 @@
-import combineReducers from './combineReducers';
-
-export {
-    combineReducers
-};
+export combineReducers from './combineReducers';
