@@ -75,8 +75,74 @@ import {
 const history = syncHistoryWithStore(browserHistory, store, {
     selectLocationState (state) {
         return state.get('routing').toJS();
-    } 
+    }
 });
 ```
 
 The `'routing'` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `routing` property of the `rootReducer`.
+
+### Bootstrap redux store with data
+It is recommended to use [`transit-immutable-js`](https://www.npmjs.com/package/transit-immutable-js) to serialize/deserialize the state when populating the store with initial data to retain Immutable types of nested Objects/Maps.
+
+Otherwise the immutable types will be lost when converting with `Immutable.fromJS`.
+
+#### Example when it will be a problem
+```js
+// todosReducer.js
+import Immutable from 'immutable';
+
+const initialState = Immutable.Map({
+    uniqueTodos: Immutable.Set([ 'task one', 'task two' ])
+});
+
+export default (state = initialState, action) => {
+    if (action.type === 'MY_ACTION') {
+        // Do calculations and return state
+        return state;
+    }
+
+    return state;
+};
+
+
+```
+
+Then you decide to save the current state to lets say local storage:
+```js
+// saveState.js
+import { saveToLocalStorage } from './myUtils';
+import store from './myCreatedStore';
+
+const storeSaveObj = store.getState().toJS();
+saveToLocalStorage(JSON.stringify(storeSaveObj));
+```
+
+Then attempt to restore the state
+
+```js
+// createStoreFromLocalStorage.js
+import Immutable from 'immutable';
+import { getStateFromLocalStorage } from './myUtils';
+import { combineReducers } from 'redux-immutable';
+import rootReducer from './myRootReducer';
+import { createStore } from 'redux';
+
+const initialState = Immutable.fromJS(getStateFromLocalStorage());
+const store = createStore(rootReducer, initialState);
+
+```
+
+But using `Immutable.fromJS` will convert all arrays to `Immutable.List`, all objects to `Immutable.Map` by default. And your reducers might not even use that, and thus will fail.
+
+`todosReducer` fail when populating initial data
+```js
+import store from './myCreatedStore';
+import Immutable from 'immutable';
+
+const uniqueTodos = store.getState().getIn([ 'todosReducer', 'uniqueTodos' ]);
+Immutable.List.isList(uniqueTodos);
+true
+Immutable.Set.isSet(uniqueTodos);
+false
+
+```
