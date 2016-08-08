@@ -65,6 +65,7 @@ describe('combineReducers()', () => {
                 })
             });
 
+            // eslint-disable-next-line no-undefined
             expect(rootReducer(undefined, {})).to.eql(initialState);
         });
     });
