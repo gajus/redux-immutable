@@ -11,7 +11,7 @@ describe('utilities', () => {
         context('state is undefined', () => {
             it('throws an error', () => {
                 expect(() => {
-                    // eslint-disable-next-line eslint-disable no-undefined
+                    // eslint-disable-next-line no-undefined
                     validateNextState(undefined, 'reducer name', {
                         type: 'foo'
                     });
@@ -23,6 +23,7 @@ describe('utilities', () => {
                 const result = validateNextState(Immutable.Map(), 'reducer name', {
                     type: 'foo'
                 });
+
                 expect(result).to.equal(null);
             });
         });
