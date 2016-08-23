@@ -5,31 +5,31 @@ import {
 } from './utilities';
 
 export default (reducers: Object): Function => {
-    const reducerKeys = Object.keys(reducers);
+  const reducerKeys = Object.keys(reducers);
 
     // eslint-disable-next-line space-infix-ops
-    return (inputState: ?Immutable.Map = Immutable.Map(), action: Object): Immutable.Map => {
+  return (inputState: ?Immutable.Map = Immutable.Map(), action: Object): Immutable.Map => {
         // eslint-disable-next-line no-process-env
-        if (process.env.NODE_ENV !== 'production') {
-            const warningMessage = getUnexpectedInvocationParameterMessage(inputState, reducers, action);
+    if (process.env.NODE_ENV !== 'production') {
+      const warningMessage = getUnexpectedInvocationParameterMessage(inputState, reducers, action);
 
-            if (warningMessage) {
+      if (warningMessage) {
                 // eslint-disable-next-line no-console
-                console.error(warningMessage);
-            }
-        }
+        console.error(warningMessage);
+      }
+    }
 
-        return inputState
+    return inputState
             .withMutations((temporaryState) => {
-                reducerKeys.forEach((reducerName) => {
-                    const reducer = reducers[reducerName];
-                    const currentDomainState = temporaryState.get(reducerName);
-                    const nextDomainState = reducer(currentDomainState, action);
+              reducerKeys.forEach((reducerName) => {
+                const reducer = reducers[reducerName];
+                const currentDomainState = temporaryState.get(reducerName);
+                const nextDomainState = reducer(currentDomainState, action);
 
-                    validateNextState(nextDomainState, reducerName, action);
+                validateNextState(nextDomainState, reducerName, action);
 
-                    temporaryState.set(reducerName, nextDomainState);
-                });
+                temporaryState.set(reducerName, nextDomainState);
+              });
             });
-    };
+  };
 };
