@@ -25,11 +25,11 @@ Create a store with `initialState` set to an instance of [`Immutable.Iterable`](
 
 ```js
 import {
-    combineReducers
+  combineReducers
 } from 'redux-immutable';
 
 import {
-    createStore
+  createStore
 } from 'redux';
 
 const initialState = Immutable.Map();
@@ -44,21 +44,21 @@ const store = createStore(rootReducer, initialState);
 ```js
 import Immutable from 'immutable';
 import {
-    LOCATION_CHANGE
+  LOCATION_CHANGE
 } from 'react-router-redux';
 
 const initialState = Immutable.fromJS({
-    locationBeforeTransitions: null
+  locationBeforeTransitions: null
 });
 
 export default (state = initialState, action) => {
-    if (action.type === LOCATION_CHANGE) {
-        return state.merge({
-            locationBeforeTransitions: action.payload
-        });
-    }
+  if (action.type === LOCATION_CHANGE) {
+    return state.merge({
+      locationBeforeTransitions: action.payload
+    });
+  }
 
-    return state;
+  return state;
 };
 ```
 
@@ -66,16 +66,16 @@ Pass a selector to access the payload state and convert it to a JavaScript objec
 
 ```js
 import {
-    browserHistory
+  browserHistory
 } from 'react-router';
 import {
-    syncHistoryWithStore
+  syncHistoryWithStore
 } from 'react-router-redux';
 
 const history = syncHistoryWithStore(browserHistory, store, {
-    selectLocationState (state) {
-        return state.get('routing').toJS();
-    } 
+  selectLocationState (state) {
+    return state.get('routing').toJS();
+  }
 });
 ```
 
