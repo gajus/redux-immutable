@@ -34,7 +34,9 @@
     "create-index": "0.1.3",
     "eslint": "^3.3.1",
     "eslint-config-canonical": "^1.7.16",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "standard-version": "^2.4.0",
+    "travis-after-all": "^1.4.4"
   },
   "scripts": {
     "create-index": "create-index --update-index ./src/utilities",

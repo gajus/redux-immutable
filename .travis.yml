@@ -9,3 +9,5 @@ script:
   - npm run test
   - npm run lint
   - npm run build
+after_success:
+  - travis-after-all && ./.scripts/release.sh
