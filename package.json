@@ -1,4 +1,4 @@
-{
+y{
   "name": "redux-immutable",
   "description": "redux-immutable is used to create an equivalent function of Redux combineReducers that works with Immutable.js state.",
   "main": "./dist/index.js",
@@ -35,8 +35,7 @@
     "eslint": "^3.3.1",
     "eslint-config-canonical": "^1.7.16",
     "mocha": "^3.0.2",
-    "standard-version": "^2.4.0",
-    "travis-after-all": "^1.4.4"
+    "semantic-release": "^6.3.2"
   },
   "scripts": {
     "create-index": "create-index --update-index ./src/utilities",
