@@ -43,5 +43,6 @@
     "test": "mocha --compilers js:babel-register ./tests/**/*.js",
     "build": "babel ./src --out-dir ./dist",
     "benchmark": "NODE_ENV=production node ./benchmarks/index.js"
-  }
+  },
+  "typings": "./typings/redux-immutable.d.ts"
 }
