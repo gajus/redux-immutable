@@ -2,7 +2,7 @@
   "env": {
     "development": {
       "plugins": [
-        "typecheck",
+        "flow-runtime",
         "syntax-flow",
         "transform-flow-strip-types"
       ]
