@@ -4,7 +4,7 @@ import {
     expect
 } from 'chai';
 import Immutable from 'immutable';
-import validateNextState from './../../src/utilities/validateNextState';
+import validateNextState from '../../src/utilities/validateNextState';
 
 describe('utilities', () => {
   describe('validateNextState()', () => {

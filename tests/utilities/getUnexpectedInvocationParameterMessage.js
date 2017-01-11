@@ -4,13 +4,13 @@ import {
     expect
 } from 'chai';
 import Immutable from 'immutable';
-import getUnexpectedInvocationParameterMessage from './../../src/utilities/getUnexpectedInvocationParameterMessage';
+import getUnexpectedInvocationParameterMessage from '../../src/utilities/getUnexpectedInvocationParameterMessage';
 
 describe('utilities', () => {
   describe('getUnexpectedInvocationParameterMessage()', () => {
-    let validAction,
-      validReducers,
-      validState;
+    let validAction;
+    let validReducers;
+    let validState;
 
     beforeEach(() => {
       validState = Immutable.Map();

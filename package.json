@@ -31,9 +31,9 @@
     "babel-register": "^6.11.6",
     "benchmark": "^2.1.1",
     "chai": "^3.5.0",
-    "eslint": "^3.3.1",
-    "eslint-config-canonical": "^1.7.16",
     "mocha": "^3.0.2",
+    "eslint": "^3.13.1",
+    "eslint-config-canonical": "^6.0.0",
     "semantic-release": "^6.3.2"
   },
   "scripts": {
