@@ -19,12 +19,13 @@ describe('utilities', () => {
       });
     });
     context('state is defined', () => {
-      it('returns null', () => {
+      it('returns undefined', () => {
         const result = validateNextState(Immutable.Map(), 'reducer name', {
           type: 'foo'
         });
 
-        expect(result).to.equal(null);
+        // eslint-disable-next-line no-undefined
+        expect(result).to.equal(undefined);
       });
     });
   });
