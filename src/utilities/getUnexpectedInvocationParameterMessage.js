@@ -1,5 +1,3 @@
-/* eslint-disable lodash3/prefer-lodash-method */
-
 import Immutable from 'immutable';
 import getStateName from './getStateName';
 
