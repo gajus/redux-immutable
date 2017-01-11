@@ -1,7 +1,7 @@
 /* eslint-disable max-nested-callbacks */
 
 import {
-    expect
+  expect
 } from 'chai';
 import Immutable from 'immutable';
 import validateNextState from '../../src/utilities/validateNextState';
@@ -11,7 +11,7 @@ describe('utilities', () => {
     context('state is undefined', () => {
       it('throws an error', () => {
         expect(() => {
-                    // eslint-disable-next-line no-undefined
+          // eslint-disable-next-line no-undefined
           validateNextState(undefined, 'reducer name', {
             type: 'foo'
           });

@@ -1,7 +1,7 @@
 /* eslint-disable max-nested-callbacks */
 
 import {
-    expect
+  expect
 } from 'chai';
 import Immutable from 'immutable';
 import getUnexpectedInvocationParameterMessage from '../../src/utilities/getUnexpectedInvocationParameterMessage';
