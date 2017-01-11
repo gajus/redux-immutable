@@ -9,3 +9,4 @@ dist
 !.travis.yml
 !.eslintrc
 !.scripts
+!.editorconfig
