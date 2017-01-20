@@ -6,16 +6,16 @@
 
 `redux-immutable` is used to create an equivalent function of Redux [`combineReducers`](http://rackt.org/redux/docs/api/combineReducers.html) that works with [Immutable.js](https://facebook.github.io/immutable-js/) state.
 
-When Redux [`createStore`](https://github.com/rackt/redux/blob/master/docs/api/createStore.md) `reducer` is created using `redux-immutable` then `initialState` must be an instance of [`Immutable.Iterable`](https://facebook.github.io/immutable-js/docs/#/Iterable).
+When Redux [`createStore`](https://github.com/reactjs/redux/blob/master/docs/api/createStore.md) `reducer` is created using `redux-immutable` then `initialState` must be an instance of [`Immutable.Iterable`](https://facebook.github.io/immutable-js/docs/#/Iterable).
 
 ## Problem
 
-When [`createStore`](https://github.com/rackt/redux/blob/master/docs/api/createStore.md) is invoked with `initialState` that is an instance of `Immutable.Iterable` further invocation of reducer will [produce an error](https://github.com/rackt/redux/blob/v3.0.6/src/combineReducers.js#L31-L38):
+When [`createStore`](https://github.com/reactjs/redux/blob/v3.0.6/docs/api/createStore.md) is invoked with `initialState` that is an instance of `Immutable.Iterable` further invocation of reducer will [produce an error](https://github.com/reactjs/redux/blob/v3.0.6/src/combineReducers.js#L31-L38):
 
 > The initialState argument passed to createStore has unexpected type of "Object".
 > Expected argument to be an object with the following keys: "data"
 
-This is because Redux `combineReducers` [treats `state` object as a plain JavaScript object](https://github.com/rackt/redux/blob/v3.0.6/src/combineReducers.js#L120-L129).
+This is because Redux `combineReducers` [treats `state` object as a plain JavaScript object](https://github.com/reactjs/redux/blob/v3.0.6/src/combineReducers.js#L120-L129).
 
 `combineReducers` created using `redux-immutable` uses Immutable.js API to iterate the state.
 
