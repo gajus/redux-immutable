@@ -4,11 +4,11 @@ import {
   validateNextState
 } from './utilities';
 
-export default (reducers: Object): Function => {
+export default (reducers: Object, getDefaultState: ?Function = Immutable.Map): Function => {
   const reducerKeys = Object.keys(reducers);
 
   // eslint-disable-next-line space-infix-ops
-  return (inputState: ?Immutable.Map = Immutable.Map(), action: Object): Immutable.Map => {
+  return (inputState: ?Function = getDefaultState(), action: Object): Immutable.Map => {
     // eslint-disable-next-line no-process-env
     if (process.env.NODE_ENV !== 'production') {
       const warningMessage = getUnexpectedInvocationParameterMessage(inputState, reducers, action);
