@@ -37,6 +37,29 @@ const rootReducer = combineReducers({});
 const store = createStore(rootReducer, initialState);
 ```
 
+By default, if `state` is `undefined`, `rootReducer(state, action)` is called with `state = Immutable.Map()`. A different default function can be provided as the second parameter to `combineReducers(reducers, getDefaultState)`, for example:
+
+```js
+const StateRecord = Immutable.Record({
+	foo: 'bar'
+});
+const rootReducer = combineReducers({foo: fooReducer}, StateRecord);
+// rootReducer now has signature of rootReducer(state = StateRecord(), action)
+// state now must always have 'foo' property with 'bar' as its default value
+```
+
+When using `Immutable.Record` it is possible to delegate default values to child reducers:
+
+```js
+const StateRecord = Immutable.Record({
+	foo: undefined
+});
+const rootReducer = combineReducers({foo: fooReducer}, StateRecord);
+// state now must always have 'foo' property with its default value returned from fooReducer(undefined, action)
+```
+
+In general, `getDefaultState` function must return an instance of `Immutable.Iterable` that implements `get`, `set` and `withMutations` methods. Such iterables are `List`, `Map`, `OrderedMap` and `Record`.
+
 ### Using with `react-router-redux`
 
 `react-router-redux` [`routeReducer`](https://github.com/reactjs/react-router-redux/tree/v4.0.2#routerreducer) does not work with Immutable.js. You need to use a custom reducer:
