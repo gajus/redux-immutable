@@ -17,6 +17,7 @@
     "url": "http://gajus.com"
   },
   "license": "BSD-3-Clause",
+  "typings": "./index.d.ts",
   "dependencies": {
     "immutable": "^3.8.1"
   },
