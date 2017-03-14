@@ -10,7 +10,7 @@ export default (state: Object, reducers: Object, action: Object) => {
 
   const stateName = getStateName(action);
 
-  if (!Immutable.Iterable.isIterable(state)) {
+  if (Immutable.isImmutable ? !Immutable.isImmutable(state) : !Immutable.Iterable.isIterable(state)) {
     return 'The ' + stateName + ' is of unexpected type. Expected argument to be an instance of Immutable.Iterable with the following properties: "' + reducerNames.join('", "') + '".';
   }
 
