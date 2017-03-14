@@ -58,7 +58,7 @@ const rootReducer = combineReducers({foo: fooReducer}, StateRecord);
 // state now must always have 'foo' property with its default value returned from fooReducer(undefined, action)
 ```
 
-In general, `getDefaultState` function must return an instance of `Immutable.Iterable` that implements `get`, `set` and `withMutations` methods. Such iterables are `List`, `Map`, `OrderedMap` and `Record`.
+In general, `getDefaultState` function must return an instance of `Immutable.Record` or `Immutable.Collection` that implements `get`, `set` and `withMutations` methods. Such collections are `List`, `Map` and `OrderedMap`.
 
 ### Using with `react-router-redux`
 
