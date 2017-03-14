@@ -14,7 +14,7 @@ export default (state: Object, reducers: Object, action: Object) => {
     return 'The ' + stateName + ' is of unexpected type. Expected argument to be an instance of Immutable.Iterable with the following properties: "' + reducerNames.join('", "') + '".';
   }
 
-  const unexpectedStatePropertyNames = state.keySeq().toArray().filter((name) => {
+  const unexpectedStatePropertyNames = state.toSeq().keySeq().toArray().filter((name) => {
     return !reducers.hasOwnProperty(name);
   });
 
