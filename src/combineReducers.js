@@ -24,7 +24,7 @@ export default (reducers: Object, getDefaultState: ?Function = Immutable.Map): F
         reducerKeys.forEach((reducerName) => {
           const reducer = reducers[reducerName];
           const currentDomainState = temporaryState.get(reducerName);
-          const nextDomainState = reducer(currentDomainState, action);
+          const nextDomainState = reducer(currentDomainState, action, temporaryState);
 
           validateNextState(nextDomainState, reducerName, action);
 
