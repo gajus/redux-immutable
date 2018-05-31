@@ -60,7 +60,7 @@ const rootReducer = combineReducers({foo: fooReducer}, StateRecord);
 
 In general, `getDefaultState` function must return an instance of `Immutable.Record` or `Immutable.Collection` that implements `get`, `set` and `withMutations` methods. Such collections are `List`, `Map` and `OrderedMap`.
 
-### Using with `react-router-redux`
+### Using with `react-router-redux` v4 and under
 
 `react-router-redux` [`routeReducer`](https://github.com/reactjs/react-router-redux/tree/v4.0.2#routerreducer) does not work with Immutable.js. You need to use a custom reducer:
 
@@ -101,3 +101,28 @@ const history = syncHistoryWithStore(browserHistory, store, {
 ```
 
 The `'routing'` path depends on the `rootReducer` definition. This example assumes that `routeReducer` is made available under `routing` property of the `rootReducer`.
+
+### Using with `react-router-redux` v5
+To make [`react-router-redux` v5](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-redux) work with Immutable.js you only need to use a custom reducer:
+
+```js
+import {Map}             from 'immutable';
+import {LOCATION_CHANGE} from 'react-router-redux';
+
+const initialState = Map({
+                             location: null,
+                             action:   null
+                         });
+
+export function routerReducer(state = initialState, {type, payload = {}} = {}) {
+    if (type === LOCATION_CHANGE) {
+        const location = payload.location || payload;
+        const action   = payload.action;
+
+        return state.set('location', location)
+                    .set('action', action);
+    }
+
+    return state;
+}
+```
