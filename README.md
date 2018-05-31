@@ -106,23 +106,29 @@ The `'routing'` path depends on the `rootReducer` definition. This example assum
 To make [`react-router-redux` v5](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-redux) work with Immutable.js you only need to use a custom reducer:
 
 ```js
-import {Map}             from 'immutable';
-import {LOCATION_CHANGE} from 'react-router-redux';
+import {
+  Map
+} from 'immutable';
+import {
+  LOCATION_CHANGE
+} from 'react-router-redux';
 
 const initialState = Map({
-                             location: null,
-                             action:   null
-                         });
+  location: null,
+  action: null
+});
 
 export function routerReducer(state = initialState, {type, payload = {}} = {}) {
-    if (type === LOCATION_CHANGE) {
-        const location = payload.location || payload;
-        const action   = payload.action;
+  if (type === LOCATION_CHANGE) {
+    const location = payload.location || payload;
+    const action = payload.action;
 
-        return state.set('location', location)
-                    .set('action', action);
-    }
+    return state
+      .set('location', location)
+      .set('action', action);
+  }
 
-    return state;
+  return state;
 }
+
 ```
