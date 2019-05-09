@@ -1,5 +1,6 @@
 # `redux-immutable`
 
+[![GitSpo Mentions](https://gitspo.com/badges/gajus/redux-immutable?style=flat-square)](https://gitspo.com/mentions/gajus/redux-immutable)
 [![Travis build status](http://img.shields.io/travis/gajus/redux-immutable/master.svg?style=flat-square)](https://travis-ci.org/gajus/redux-immutable)
 [![NPM version](http://img.shields.io/npm/v/redux-immutable.svg?style=flat-square)](https://www.npmjs.org/package/redux-immutable)
 [![Canonical Code Style](https://img.shields.io/badge/code%20style-canonical-blue.svg?style=flat-square)](https://github.com/gajus/canonical)
