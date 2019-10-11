@@ -8,4 +8,5 @@ dist
 !.babelrc
 !.travis.yml
 !.eslintrc
+!.eslintignore
 !.editorconfig

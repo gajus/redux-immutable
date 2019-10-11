@@ -2,6 +2,7 @@
   "name": "redux-immutable",
   "description": "redux-immutable is used to create an equivalent function of Redux combineReducers that works with Immutable.js state.",
   "main": "./dist/index.js",
+  "types": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/gajus/redux-immutable"
@@ -37,6 +38,7 @@
     "husky": "^0.12.0",
 		"immutable": "^3.8.1 || ^4.0.0-rc.1",
     "mocha": "^3.2.0",
+    "redux": "^4.0.4",
     "semantic-release": "^6.3.2"
   },
   "scripts": {
