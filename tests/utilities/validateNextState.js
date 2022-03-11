@@ -3,7 +3,7 @@
 import {
   expect
 } from 'chai';
-import Immutable from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 import validateNextState from '../../src/utilities/validateNextState';
 
 describe('utilities', () => {
@@ -20,7 +20,7 @@ describe('utilities', () => {
     });
     context('state is defined', () => {
       it('returns undefined', () => {
-        const result = validateNextState(Immutable.Map(), 'reducer name', {
+        const result = validateNextState(ImmutableMap(), 'reducer name', {
           type: 'foo'
         });
 

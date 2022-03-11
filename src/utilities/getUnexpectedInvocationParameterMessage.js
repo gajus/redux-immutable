@@ -1,5 +1,5 @@
 
-import Immutable from 'immutable';
+import { isCollection } from 'immutable';
 import getStateName from './getStateName';
 
 export default (state: Object, reducers: Object, action: Object) => {
@@ -11,7 +11,7 @@ export default (state: Object, reducers: Object, action: Object) => {
 
   const stateName = getStateName(action);
 
-  if (!Immutable.isCollection(state)) {
+  if (!isCollection(state)) {
     return 'The ' + stateName + ' is of unexpected type. Expected argument to be an instance of Immutable.Collection or Immutable.Record with the following properties: "' + reducerNames.join('", "') + '".';
   }
 
