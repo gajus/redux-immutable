@@ -1,3 +1,17 @@
 {
-  "extends": "canonical"
+  "extends": [
+    "canonical",
+    "canonical/typescript"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "root": true,
+  "rules": {
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/default-param-last": 0,
+    "no-prototype-builtins": 0,
+    "unicorn/no-object-as-default-parameter": 0,
+    "@typescript-eslint/no-confusing-void-expression": 0
+  }
 }

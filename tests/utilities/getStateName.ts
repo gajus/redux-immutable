@@ -1,16 +1,18 @@
 /* eslint-disable max-nested-callbacks */
 
 import {
-  expect
+  expect,
 } from 'chai';
-import getStateName from '../../src/utilities/getStateName';
+import {
+  getStateName,
+} from '../../src/utilities/getStateName';
 
 describe('utilities', () => {
   describe('getStateName()', () => {
     context('action.type is @@redux/INIT', () => {
       it('describes initialState', () => {
         const expectedStateName = getStateName({
-          type: '@@redux/INIT'
+          type: '@@redux/INIT',
         });
 
         expect(expectedStateName).to.equal('initialState argument passed to createStore');

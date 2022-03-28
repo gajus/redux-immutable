@@ -1,14 +1,13 @@
-import Immutable from 'immutable';
+import * as Immutable from 'immutable';
 import {
   getUnexpectedInvocationParameterMessage,
-  validateNextState
+  validateNextState,
 } from './utilities';
 
-export default (reducers: Object, getDefaultState: ?Function = Immutable.Map): Function => {
+export const combineReducers = (reducers: any, getDefaultState = Immutable.Map): Function => {
   const reducerKeys = Object.keys(reducers);
 
-  // eslint-disable-next-line space-infix-ops
-  return (inputState: ?Function = getDefaultState(), action: Object): Immutable.Map => {
+  return (inputState = getDefaultState(), action: Object) => {
     // eslint-disable-next-line no-process-env
     if (process.env.NODE_ENV !== 'production') {
       const warningMessage = getUnexpectedInvocationParameterMessage(inputState, reducers, action);
@@ -21,7 +20,7 @@ export default (reducers: Object, getDefaultState: ?Function = Immutable.Map): F
 
     return inputState
       .withMutations((temporaryState) => {
-        reducerKeys.forEach((reducerName) => {
+        for (const reducerName of reducerKeys) {
           const reducer = reducers[reducerName];
           const currentDomainState = temporaryState.get(reducerName);
           const nextDomainState = reducer(currentDomainState, action);
@@ -29,7 +28,7 @@ export default (reducers: Object, getDefaultState: ?Function = Immutable.Map): F
           validateNextState(nextDomainState, reducerName, action);
 
           temporaryState.set(reducerName, nextDomainState);
-        });
+        }
       });
   };
 };

@@ -1,10 +1,12 @@
 /* eslint-disable max-nested-callbacks */
 
 import {
-  expect
+  expect,
 } from 'chai';
-import Immutable from 'immutable';
-import validateNextState from '../../src/utilities/validateNextState';
+import * as Immutable from 'immutable';
+import {
+  validateNextState,
+} from '../../src/utilities/validateNextState';
 
 describe('utilities', () => {
   describe('validateNextState()', () => {
@@ -13,7 +15,7 @@ describe('utilities', () => {
         expect(() => {
           // eslint-disable-next-line no-undefined
           validateNextState(undefined, 'reducer name', {
-            type: 'foo'
+            type: 'foo',
           });
         }).to.throw(Error, 'Reducer "reducer name" returned undefined when handling "foo" action. To ignore an action, you must explicitly return the previous state.');
       });
@@ -21,7 +23,7 @@ describe('utilities', () => {
     context('state is defined', () => {
       it('returns undefined', () => {
         const result = validateNextState(Immutable.Map(), 'reducer name', {
-          type: 'foo'
+          type: 'foo',
         });
 
         // eslint-disable-next-line no-undefined

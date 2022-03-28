@@ -1,8 +1,9 @@
+import * as Immutable from 'immutable';
+import {
+  getStateName,
+} from './getStateName';
 
-import Immutable from 'immutable';
-import getStateName from './getStateName';
-
-export default (state: Object, reducers: Object, action: Object) => {
+export const getUnexpectedInvocationParameterMessage = (state: any, reducers: any, action: any) => {
   const reducerNames = Object.keys(reducers);
 
   if (!reducerNames.length) {

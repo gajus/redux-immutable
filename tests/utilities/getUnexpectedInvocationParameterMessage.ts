@@ -1,24 +1,26 @@
 /* eslint-disable max-nested-callbacks */
 
 import {
-  expect
+  expect,
 } from 'chai';
-import Immutable from 'immutable';
-import getUnexpectedInvocationParameterMessage from '../../src/utilities/getUnexpectedInvocationParameterMessage';
+import * as Immutable from 'immutable';
+import {
+  getUnexpectedInvocationParameterMessage,
+} from '../../src/utilities/getUnexpectedInvocationParameterMessage';
 
 describe('utilities', () => {
   describe('getUnexpectedInvocationParameterMessage()', () => {
-    let validAction;
-    let validReducers;
-    let validState;
+    let validAction: any;
+    let validReducers: any;
+    let validState: any;
 
     beforeEach(() => {
       validState = Immutable.Map();
       validReducers = {
-        foo () {}
+        foo () {},
       };
       validAction = {
-        type: '@@redux/INIT'
+        type: '@@redux/INIT',
       };
     });
 
@@ -39,7 +41,7 @@ describe('utilities', () => {
     context('state defines properties that are not present in the reducer map', () => {
       it('returns error', () => {
         const expectedErrorMessage = getUnexpectedInvocationParameterMessage(Immutable.Map({
-          bar: 'BAR'
+          bar: 'BAR',
         }), validReducers, validAction);
 
         expect(expectedErrorMessage).to.equal('Unexpected property "bar" found in initialState argument passed to createStore. Expected to find one of the known reducer property names instead: "foo". Unexpected properties will be ignored.');
